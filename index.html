@@ -105,9 +105,19 @@
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .meta { margin-top: 14px; font-size: 13.5px; color: var(--text-3); }
 
+  /* cartes officielles (scans) */
+  .card { position: relative; aspect-ratio: 59 / 86; border-radius: 4.2% / 2.9%; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .6), 0 26px 60px rgba(0, 0, 0, .6), 0 0 40px rgba(245, 196, 81, .14); }
+  .card img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .card::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .38) 45%, rgba(255, 220, 255, .16) 50%, transparent 62%); background-size: 260% 100%;
+    animation: foil 6s ease-in-out infinite; mix-blend-mode: soft-light; }
+
+  @keyframes foil { 0%, 30% { background-position: 120% 0; } 70%, 100% { background-position: -40% 0; } }
+
   /* éventail de cartes */
   .fan { position: relative; height: 520px; perspective: 1400px; }
-  .fan .ygo { position: absolute; left: 50%; top: 50%; width: 250px; transition: transform .6s var(--ease); }
+  .fan .card { position: absolute; left: 50%; top: 50%; width: 250px; transition: transform .6s var(--ease); }
   .fan .c1 { transform: translate(-112%, -46%) rotate(-12deg); z-index: 1; }
   .fan .c2 { transform: translate(-50%, -54%) rotate(0deg) scale(1.06); z-index: 3; animation: hover 6s ease-in-out infinite; }
   .fan .c3 { transform: translate(12%, -46%) rotate(12deg); z-index: 2; }
@@ -120,45 +130,6 @@
     border: 1px solid rgba(245, 196, 81, .35); box-shadow: 0 0 40px rgba(245, 196, 81, .15) inset; animation: spin 40s linear infinite; }
   .fan .ring::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; border: 1px dashed rgba(245, 196, 81, .3); }
   @media (prefers-reduced-motion: reduce) { .fan .c2, .fan .ring { animation: none; } }
-
-  /* ---------------- CARTE YU-GI-OH! (cadre authentique, illustration originale) ---------------- */
-  .ygo { --frame: linear-gradient(160deg, #e8a35c, #c7742f 55%, #9a531c); aspect-ratio: 59 / 86; border-radius: 3.4% / 2.3%; padding: 3.6% 4.2% 3%;
-    background: var(--frame); color: #1a1208; display: flex; flex-direction: column; container-type: inline-size;
-    box-shadow: 0 0 0 1px #2a1c0c, 0 0 0 4px #13100c, 0 24px 60px rgba(0, 0, 0, .6), 0 0 40px rgba(245, 196, 81, .12); position: relative; overflow: hidden; }
-  .ygo::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .35) 45%, rgba(255, 220, 255, .15) 50%, transparent 62%); background-size: 260% 100%;
-    animation: foil 6s ease-in-out infinite; mix-blend-mode: soft-light; }
-  @keyframes foil { 0%, 30% { background-position: 120% 0; } 70%, 100% { background-position: -40% 0; } }
-  .ygo.normal { --frame: linear-gradient(160deg, #ecd383, #cfa94e 55%, #9f7b2b); }
-  .ygo .art img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .ygo .fx.flavor { font-style: italic; }
-  .ygo.spell { --frame: linear-gradient(160deg, #3fb9a0, #1d8a77 55%, #136357); }
-  .ygo.trap { --frame: linear-gradient(160deg, #d0609f, #a83d7c 55%, #7c2a5c); }
-  .ygo .nm { display: flex; align-items: center; justify-content: space-between; gap: 4%; height: 8.6cqw; padding: 0 2.2%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .2)); border: .6cqw solid rgba(60, 35, 10, .55); border-radius: .8cqw;
-    font: 700 6.4cqw/1 "Cinzel", Georgia, serif; letter-spacing: .02em; white-space: nowrap; }
-  .ygo.spell .nm, .ygo.trap .nm { color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .6); background: linear-gradient(180deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .05)); }
-  .ygo .attr { width: 8cqw; height: 8cqw; border-radius: 50%; flex: none; display: grid; place-items: center; font: 700 3.3cqw/1 var(--font); color: #fff;
-    box-shadow: inset 0 0 0 .5cqw rgba(255, 255, 255, .7), 0 .3cqw .8cqw rgba(0, 0, 0, .4); }
-  .attr.light { background: radial-gradient(circle at 35% 30%, #fff6c8, #e8b830 60%, #9c7410); color: #4a3200; }
-  .attr.dark { background: radial-gradient(circle at 35% 30%, #c7a2ff, #6b2fd6 60%, #2e0f6b); }
-  .attr.spell { background: radial-gradient(circle at 35% 30%, #a6ffe9, #19a586 60%, #0b5848); }
-  .attr.trap { background: radial-gradient(circle at 35% 30%, #ffc3e4, #c43a86 60%, #6b1446); }
-  .ygo .lv { display: flex; justify-content: flex-end; gap: .9cqw; height: 7cqw; align-items: center; padding: 0 1%; }
-  .ygo .lv i { width: 5.4cqw; height: 5.4cqw; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe08a, #e26b12 55%, #8d2c00);
-    box-shadow: 0 0 0 .4cqw #2b1505, inset 0 0 .8cqw rgba(255, 255, 255, .4); position: relative; }
-  .ygo .lv i::after { content: "★"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 3.6cqw; color: #fff4c4; }
-  .ygo .lv.txt { justify-content: flex-end; font: 700 5cqw/1 "Cinzel", serif; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .6); }
-  .ygo .art { aspect-ratio: 1; margin: 0 3.8%; border: 1.2cqw solid #1d140b; box-shadow: inset 0 0 0 .5cqw rgba(255, 255, 255, .15), 0 0 0 .4cqw rgba(255, 235, 200, .4); overflow: hidden; background: #110a1c; }
-  .ygo .art svg { display: block; width: 100%; height: 100%; }
-  .ygo .meta-row { height: 5cqw; display: flex; justify-content: flex-end; align-items: center; padding: 0 4%; font: 600 2.6cqw/1 var(--font); color: rgba(0, 0, 0, .55); }
-  .ygo .box { flex: 1; margin: 0 1.6%; padding: 2.4% 3%; background: linear-gradient(180deg, #f3e7c8, #e4d3a8); border: .6cqw solid rgba(60, 35, 10, .55); border-radius: .4cqw;
-    display: flex; flex-direction: column; min-height: 0; }
-  .ygo .tl { font: 700 3.4cqw/1.2 Georgia, "Times New Roman", serif; }
-  .ygo .fx { margin-top: 1.2cqw; font: 3.05cqw/1.3 Georgia, "Times New Roman", serif; color: #2a1d0c; overflow: hidden; }
-  .ygo .ad { margin-top: auto; border-top: .4cqw solid #1a1208; padding-top: 1cqw; text-align: right; font: 700 3.5cqw/1 Georgia, serif; }
-  .ygo .id { position: absolute; left: 5%; bottom: 1.2%; font: 2.2cqw/1 var(--font); color: rgba(0, 0, 0, .55); }
-  .ygo.spell .id, .ygo.trap .id { color: rgba(255, 255, 255, .6); }
 
   /* ---------------- sections ---------------- */
   section { padding: 110px 0 0; scroll-margin-top: 80px; }
@@ -201,8 +172,8 @@
   .why p { margin: 0; color: var(--text-2); }
 
   /* démonstration */
+  .demo .card { width: 100%; transform: rotate(-3deg); }
   .demo { display: grid; grid-template-columns: 300px 1fr; gap: 34px; align-items: center; padding: 34px; }
-  .demo .ygo { width: 100%; transform: rotate(-3deg); }
   .bubble { padding: 24px; border-radius: 22px; }
   .bubble .tag { display: inline-flex; gap: 6px; align-items: center; font: 600 12px/1 var(--font); color: #2a1a04; padding: 6px 10px; border-radius: 999px;
     background: linear-gradient(180deg, #fff1c2, #f5c451 50%, #c88a22); }
@@ -297,20 +268,20 @@
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .ygo::after { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .card::after { animation: none; } }
 
   @media (max-width: 920px) {
     .hero { grid-template-columns: 1fr; text-align: center; padding-top: 50px; }
     .hero .lead { margin-inline: auto; } .hero .actions { justify-content: center; }
     .ygo-logo { margin-inline: auto; } .se7en-line { justify-content: center; }
-    .fan { height: 440px; } .fan .ygo { width: 210px; }
+    .fan { height: 440px; } .fan .card { width: 210px; }
     .dmo, .update { grid-template-columns: 1fr; }
     .bento { grid-template-columns: 1fr 1fr; } .tile.w4, .tile.w3, .tile.w2 { grid-column: span 2; }
-    .demo { grid-template-columns: 1fr; justify-items: center; } .demo .ygo { max-width: 260px; }
+    .demo { grid-template-columns: 1fr; justify-items: center; } .demo .card { max-width: 260px; }
   }
   @media (max-width: 640px) {
     .nav, .nav-cta { display: none; } .lang { margin-left: auto; }
-    .fan { height: 360px; } .fan .ygo { width: 160px; }
+    .fan { height: 360px; } .fan .card { width: 160px; }
     .fan .halo, .fan .ring { width: 320px; height: 320px; }
     .dmo .txt, .update { padding: 28px; } .demo { padding: 20px; }
     section { padding-top: 80px; } .tile { min-height: 0; padding: 26px; }
@@ -321,43 +292,6 @@
 <body>
 <div class="realm" aria-hidden="true"><div class="rays"></div><div class="stars"></div></div>
 
-<!-- Illustrations originales (aucune image de carte officielle) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <radialGradient id="sky1" cx="50%" cy="38%" r="70%"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".25" stop-color="#f08ac0"/><stop offset=".6" stop-color="#5a2fb8"/><stop offset="1" stop-color="#120828"/></radialGradient>
-    <radialGradient id="sky2" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#c9fff2"/><stop offset=".3" stop-color="#2fbfa4"/><stop offset=".7" stop-color="#0d4f60"/><stop offset="1" stop-color="#06141f"/></radialGradient>
-    <radialGradient id="sky3" cx="50%" cy="55%" r="75%"><stop offset="0" stop-color="#ffd0ea"/><stop offset=".3" stop-color="#c43a86"/><stop offset=".7" stop-color="#3a0f3a"/><stop offset="1" stop-color="#12040f"/></radialGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#9a6416"/></linearGradient>
-    <symbol id="art-guardian" viewBox="0 0 100 100">
-      <rect width="100" height="100" fill="url(#sky1)"/>
-      <circle cx="50" cy="40" r="26" fill="none" stroke="url(#gold)" stroke-width="1.2" opacity=".8"/>
-      <circle cx="50" cy="40" r="20" fill="none" stroke="#ffe9a8" stroke-width=".4" stroke-dasharray="2 2" opacity=".8"/>
-      <path d="M50 22 L60 52 L50 47 L40 52 Z" fill="url(#gold)"/>
-      <path d="M30 100 C32 74 40 62 50 58 C60 62 68 74 70 100 Z" fill="#1a0b33"/>
-      <path d="M38 100 C40 80 45 70 50 66 C55 70 60 80 62 100 Z" fill="#3b1d78"/>
-      <path d="M50 58 L44 66 L50 63 L56 66 Z" fill="url(#gold)"/>
-      <text x="50" y="45" text-anchor="middle" font-family="Cinzel Decorative, serif" font-weight="900" font-size="14" fill="#ff8cc6" opacity=".95">7</text>
-      <g fill="#fff"><circle cx="15" cy="15" r=".8"/><circle cx="84" cy="22" r=".6"/><circle cx="78" cy="10" r=".5"/><circle cx="20" cy="30" r=".5"/></g>
-    </symbol>
-    <symbol id="art-seal" viewBox="0 0 100 100">
-      <rect width="100" height="100" fill="url(#sky2)"/>
-      <g stroke="#c9fff2" stroke-width=".4" opacity=".45"><path d="M50 0 V100 M0 50 H100 M15 15 L85 85 M85 15 L15 85"/></g>
-      <circle cx="50" cy="52" r="32" fill="none" stroke="#c9fff2" stroke-width=".8" opacity=".7"/>
-      <path d="M50 22 L78 72 L22 72 Z" fill="none" stroke="url(#gold)" stroke-width="2.4" stroke-linejoin="round"/>
-      <path d="M36 58 Q50 44 64 58 Q50 70 36 58 Z" fill="none" stroke="url(#gold)" stroke-width="1.8"/>
-      <circle cx="50" cy="58" r="4.2" fill="url(#gold)"/>
-      <path d="M50 62 V70 M45 62 L42 69 M55 62 L58 69" stroke="url(#gold)" stroke-width="1.3" stroke-linecap="round"/>
-    </symbol>
-    <symbol id="art-maze" viewBox="0 0 100 100">
-      <rect width="100" height="100" fill="url(#sky3)"/>
-      <g fill="none" stroke="#ffd0ea" stroke-width="1.4" opacity=".75">
-        <rect x="14" y="14" width="72" height="72"/><path d="M14 30 H70 V70 H30 V44 H56 V58 H44"/><path d="M86 46 H78 M30 86 V78"/>
-      </g>
-      <g stroke="#ff5fb4" stroke-width="1.8"><path d="M8 92 L28 72 M92 8 L72 28 M8 8 L28 28 M92 92 L72 72"/></g>
-      <circle cx="50" cy="51" r="5" fill="#fff" opacity=".9"/><circle cx="50" cy="51" r="11" fill="none" stroke="#fff" stroke-width=".6" opacity=".6"/>
-    </symbol>
-  </defs>
-</svg>
 
 <div class="topbar">
   <div class="bar glass strong">
@@ -394,28 +328,9 @@
 
     <div class="fan" aria-hidden="true">
       <div class="halo"></div><div class="ring"></div>
-      <div class="ygo normal c1">
-        <div class="nm"><span>Magicien Sombre</span><span class="attr dark">TÉN</span></div>
-        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="art"><img src="img/magicien-sombre.webp" width="560" height="560" alt=""></div>
-        <div class="meta-row">LOB-FR005</div>
-        <div class="box"><div class="tl">[Magicien]</div><div class="fx flavor">Le magicien ultime en matière d'attaque et de défense.</div><div class="ad">ATK/2500 &nbsp;DEF/2100</div></div>
-      </div>
-      <div class="ygo normal c2">
-        <div class="nm" style="font-size:5.1cqw"><span>Dragon Blanc aux Yeux Bleus</span><span class="attr light">LUM</span></div>
-        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="art"><img src="img/dragon-blanc.webp" width="560" height="560" alt=""></div>
-        <div class="meta-row">LOB-FR001</div>
-        <div class="box"><div class="tl">[Dragon]</div><div class="fx flavor">Ce dragon légendaire est une puissante machine de destruction.</div><div class="ad">ATK/3000 &nbsp;DEF/2500</div></div>
-      </div>
-      <div class="ygo trap c3">
-        <div class="nm"><span>Labyrinthe d'Ombre</span><span class="attr trap">PIÈ</span></div>
-        <div class="lv txt">[Carte Piège ∞]</div>
-        <div class="art"><svg><use href="#art-maze"/></svg></div>
-        <div class="meta-row">SE7-FR003</div>
-        <div class="box"><div class="fx">Quand un monstre de votre adversaire déclare une attaque : annulez l'attaque, puis terminez la Battle Phase.</div></div>
-        <div class="id">Se7en · exemple</div>
-      </div>
+      <div class="card c1"><img src="img/carte-magicien-sombre.webp" width="472" height="688" alt="Carte Dark Magician"></div>
+      <div class="card c2"><img src="img/carte-dragon-blanc.webp" width="472" height="688" alt="Carte Blue-Eyes White Dragon"></div>
+      <div class="card c3"><img src="img/carte-dragon-noir.webp" width="472" height="688" alt="Carte Red-Eyes Black Dragon"></div>
     </div>
   </header>
 
@@ -468,13 +383,7 @@
       <h2 data-i18n="demo_t">Tu vises. Tu comprends.</h2>
     </div>
     <div class="demo glass reveal">
-      <div class="ygo normal">
-        <div class="nm"><span>Dark Magician</span><span class="attr dark">DRK</span></div>
-        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="art"><img src="img/magicien-sombre.webp" width="560" height="560" alt="" loading="lazy"></div>
-        <div class="meta-row">LOB-EN005</div>
-        <div class="box"><div class="tl">[Spellcaster]</div><div class="fx flavor">The ultimate wizard in terms of attack and defense.</div><div class="ad">ATK/2500 &nbsp;DEF/2100</div></div>
-      </div>
+      <div class="card"><img src="img/carte-magicien-sombre.webp" width="472" height="688" alt="Carte Dark Magician en anglais" loading="lazy"></div>
       <div>
         <div class="bubble glass strong">
           <span class="tag">✦ <span data-i18n="demo_tag">Reconnue et traduite</span></span>
@@ -627,7 +536,7 @@
   <div class="wrap">
     <ul>
       <li data-i18n="l1"><b>Projet non lucratif</b> : Se7en DMO Assistant est distribué gratuitement, sans publicité ni contrepartie, uniquement pour la communauté française. Il ne doit pas être revendu.</li>
-      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh!, son logo, les noms et les illustrations des cartes (dont Magicien Sombre et Dragon Blanc aux Yeux Bleus) appartiennent à Konami et à leurs ayants droit ; ils sont montrés ici uniquement à titre d'illustration, sans aucun but commercial. La carte « Labyrinthe d'Ombre » est un exemple inventé.</li>
+      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh!, son logo, les noms et les illustrations des cartes (dont Magicien Sombre, Dragon Blanc aux Yeux Bleus et Dragon Noir aux Yeux Rouges) appartiennent à Konami et à leurs ayants droit ; ils sont montrés ici uniquement à titre d'illustration, sans aucun but commercial.</li>
       <li data-i18n="l3">Données de cartes : <a href="https://ygoprodeck.com/api-guide/" rel="noopener">YGOPRODeck</a>. Polices Cinzel et Poppins sous licence SIL Open Font License.</li>
       <li data-i18n="l4">L'application ne modifie pas le jeu et n'envoie aucune donnée personnelle.</li>
     </ul>
@@ -689,7 +598,7 @@
     dl_m: "Windows 10 / 11 · about 180 MB · automatic updates",
     ct_k: "Contact", ct_t: "An idea? A bug? A duel?", copy: "Copy", ingame: "In-game name in DMO",
     l1: "<b>Non-profit project</b>: Se7en DMO Assistant is distributed for free, with no ads and nothing in return, only for the French-speaking community. It must not be resold.",
-    l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh!, its logo, and card names and artworks (including Dark Magician and Blue-Eyes White Dragon) belong to Konami and their respective owners; they are shown here for illustration only, with no commercial purpose. The “Labyrinthe d'Ombre” card is a made-up example.",
+    l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh!, its logo, and card names and artworks (including Dark Magician, Blue-Eyes White Dragon and Red-Eyes Black Dragon) belong to Konami and their respective owners; they are shown here for illustration only, with no commercial purpose.",
     l3: "Card data: <a href=\"https://ygoprodeck.com/api-guide/\" rel=\"noopener\">YGOPRODeck</a>. Cinzel and Poppins fonts under the SIL Open Font License.",
     l4: "The app does not modify the game and sends no personal data.",
     footer: "made by a player, for players",
