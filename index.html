@@ -4,247 +4,353 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Se7en DMO Assistant</title>
-<meta name="description" content="Outil gratuit et non lucratif pour la communauté française de Yu-Gi-Oh! Duel Monsters Online : reconnaissance des cartes et effets en français.">
-<meta name="theme-color" content="#f5f3f8">
+<meta name="description" content="Outil gratuit et non lucratif pour la communauté française de Yu-Gi-Oh! Duel Monsters Online, un fangame multijoueur : reconnaissance des cartes et effets en français.">
+<meta name="theme-color" content="#0c0718">
 <style>
+  @font-face { font-family: "Cinzel"; src: url("fonts/Cinzel.ttf") format("truetype"); font-weight: 400 900; font-display: swap; }
   @font-face { font-family: "Cinzel Decorative"; src: url("fonts/CinzelDecorative-Black.ttf") format("truetype"); font-weight: 900; font-display: swap; }
   @font-face { font-family: "Poppins"; src: url("fonts/Poppins-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
   @font-face { font-family: "Poppins"; src: url("fonts/Poppins-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
   @font-face { font-family: "Poppins"; src: url("fonts/Poppins-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
   @font-face { font-family: "Poppins"; src: url("fonts/Poppins-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
-  /* Verre liquide blanc, façon Apple : très clair, flou, reflet, liseré spéculaire */
   :root {
-    --page: #f5f3f8;
-    --ink: #1d1d1f; --ink-2: #424245; --ink-3: #6e6e73; --ink-4: #86868b;
-    --gold: #c88a22; --gold-2: #a8700f; --pink: #e0408f; --violet: #6e4bd8;
-    --glass: rgba(255, 255, 255, .55); --glass-strong: rgba(255, 255, 255, .72); --glass-soft: rgba(255, 255, 255, .38);
-    --blur: blur(24px) saturate(180%);
-    --sheen: linear-gradient(160deg, rgba(255, 255, 255, .85) 0%, rgba(255, 255, 255, .35) 28%, rgba(255, 255, 255, .08) 55%, rgba(255, 255, 255, .30) 100%);
-    --rim: linear-gradient(140deg, #fff 0%, rgba(255, 255, 255, .55) 25%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .5) 78%, #fff 100%);
-    --shadow: inset 0 1px 1px rgba(255, 255, 255, .9), inset 0 -1px 1px rgba(255, 255, 255, .35), 0 1px 2px rgba(30, 20, 60, .04), 0 12px 40px rgba(60, 40, 120, .10);
-    --shadow-lg: inset 0 1px 1px rgba(255, 255, 255, .95), 0 2px 6px rgba(30, 20, 60, .05), 0 30px 80px rgba(60, 40, 120, .16);
+    --night: #0c0718; --night-2: #160c2b;
+    --text: #fff; --text-2: rgba(255, 255, 255, .78); --text-3: rgba(255, 255, 255, .58);
+    --gold: #f5c451; --gold-hi: #ffe7a3; --gold-lo: #a8700f; --pink: #ff5fb4; --violet: #8f6bff;
+    /* verre liquide blanc (Apple) posé sur l'Ombre */
+    --glass: rgba(255, 255, 255, .11); --glass-strong: rgba(255, 255, 255, .18);
+    --blur: blur(26px) saturate(170%) brightness(1.08);
+    --sheen: linear-gradient(160deg, rgba(255, 255, 255, .34) 0%, rgba(255, 255, 255, .10) 30%, rgba(255, 255, 255, .02) 55%, rgba(255, 255, 255, .12) 100%);
+    --rim: linear-gradient(140deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .4) 22%, rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, .3) 78%, rgba(255, 255, 255, .85) 100%);
+    --glow: inset 0 1px 1px rgba(255, 255, 255, .6), inset 0 0 24px rgba(255, 255, 255, .06), 0 24px 70px rgba(0, 0, 0, .45);
     --ease: cubic-bezier(.22, 1, .36, 1);
-    --font: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", "Poppins", system-ui, sans-serif;
+    --font: "Poppins", "Segoe UI", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; color-scheme: light; }
-  body { margin: 0; background: var(--page); color: var(--ink); font: 17px/1.55 var(--font); letter-spacing: -.011em; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-  a { color: #0066cc; text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  html { scroll-behavior: smooth; color-scheme: dark; }
+  body { margin: 0; background: var(--night); color: var(--text); font: 16.5px/1.6 var(--font); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  a { color: var(--gold-hi); text-decoration: none; }
   b, strong { font-weight: 600; }
 
-  /* Fond : halos pastel qui donnent de la couleur au verre */
-  .ambient { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: linear-gradient(180deg, #faf8fc 0%, #f3f0f8 60%, #f6f2ee 100%); }
-  .ambient i { position: absolute; border-radius: 50%; filter: blur(80px); animation: drift 30s var(--ease) infinite alternate; }
-  .ambient i:nth-child(1) { width: 46vmax; height: 46vmax; left: -12vmax; top: -16vmax; background: #c9b8ff; opacity: .75; }
-  .ambient i:nth-child(2) { width: 40vmax; height: 40vmax; right: -12vmax; top: 6vh; background: #ffd99a; opacity: .7; animation-delay: -9s; }
-  .ambient i:nth-child(3) { width: 34vmax; height: 34vmax; left: 24vw; top: 55vh; background: #ffc2df; opacity: .65; animation-delay: -17s; }
-  .ambient i:nth-child(4) { width: 28vmax; height: 28vmax; right: 8vw; bottom: -10vmax; background: #b9e0ff; opacity: .6; animation-delay: -5s; }
-  @keyframes drift { to { transform: translate(5vw, 6vh) scale(1.1); } }
-  @media (prefers-reduced-motion: reduce) { .ambient i { animation: none; } }
+  /* ---------------- fond : le Royaume des Ombres ---------------- */
+  .realm { position: fixed; inset: 0; z-index: -1; overflow: hidden;
+    background: radial-gradient(80% 60% at 50% 0%, #3a1d6e 0%, transparent 65%), radial-gradient(60% 50% at 85% 70%, rgba(255, 95, 180, .22), transparent 70%),
+      radial-gradient(60% 50% at 10% 80%, rgba(80, 60, 220, .3), transparent 70%), linear-gradient(180deg, var(--night-2), var(--night)); }
+  .realm .rays { position: absolute; left: 50%; top: 18%; width: 240vmax; height: 240vmax; translate: -50% -50%;
+    background: repeating-conic-gradient(rgba(245, 196, 81, .07) 0 5deg, transparent 5deg 15deg);
+    -webkit-mask: radial-gradient(circle, #000 0, transparent 38%); mask: radial-gradient(circle, #000 0, transparent 38%); animation: spin 90s linear infinite; }
+  .realm .stars { position: absolute; inset: 0; background-image:
+      radial-gradient(1.5px 1.5px at 12% 22%, #fff8, transparent), radial-gradient(1px 1px at 72% 12%, #fff9, transparent), radial-gradient(1.5px 1.5px at 88% 46%, #ffe7a399, transparent),
+      radial-gradient(1px 1px at 32% 68%, #fff7, transparent), radial-gradient(1.5px 1.5px at 56% 84%, #fff6, transparent), radial-gradient(1px 1px at 6% 90%, #ffe7a388, transparent),
+      radial-gradient(1px 1px at 44% 38%, #fff6, transparent), radial-gradient(1.5px 1.5px at 94% 88%, #fff7, transparent); background-size: 100% 100%; opacity: .8; }
+  @keyframes spin { to { rotate: 360deg; } }
+  @media (prefers-reduced-motion: reduce) { .realm .rays { animation: none; } }
 
-  .glass { position: relative; isolation: isolate; background: var(--sheen), var(--glass); box-shadow: var(--shadow);
-    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: 28px; }
+  /* ---------------- verre ---------------- */
+  .glass { position: relative; isolation: isolate; border-radius: 26px; background: var(--sheen), var(--glass); box-shadow: var(--glow);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); }
+  .glass.strong { background: var(--sheen), var(--glass-strong); }
   .glass::after { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: var(--rim); pointer-events: none; z-index: 1;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
   .glass > * { position: relative; z-index: 2; }
-  .glass.strong { background: var(--sheen), var(--glass-strong); }
-  .glass.lg { box-shadow: var(--shadow-lg); }
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: rgba(255, 255, 255, .9); } }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .glass { background: rgba(40, 26, 70, .92); } }
 
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
-  .narrow { max-width: 760px; margin-inline: auto; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+  .narrow { max-width: 780px; margin-inline: auto; }
 
-  /* Barre de navigation */
-  .topbar { position: sticky; top: 12px; z-index: 20; padding: 0 16px; margin-top: 12px; }
-  .bar { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; gap: 10px; padding: 7px 7px 7px 20px; border-radius: 999px; }
-  .brand { font: 900 19px/1 "Cinzel Decorative", serif; letter-spacing: 1px; color: var(--gold); text-decoration: none !important; }
+  /* ---------------- navigation ---------------- */
+  .topbar { position: sticky; top: 12px; z-index: 30; padding: 0 16px; margin-top: 12px; }
+  .bar { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 10px; padding: 7px 7px 7px 20px; border-radius: 999px; }
+  .brand { font: 900 19px/1 "Cinzel Decorative", serif; letter-spacing: 1px; color: var(--gold); }
   .brand span { color: var(--pink); }
   .nav { display: flex; gap: 2px; margin-left: auto; }
-  .nav a { color: var(--ink-2); font-size: 14px; padding: 8px 12px; border-radius: 999px; transition: background .15s, color .15s; text-decoration: none; }
-  .nav a:hover { background: rgba(255, 255, 255, .7); color: var(--ink); }
-  .lang { display: flex; padding: 3px; border-radius: 999px; background: rgba(120, 110, 140, .12); }
-  .lang button { font: 600 13px/1 var(--font); color: var(--ink-3); background: none; border: 0; padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: all .24s var(--ease); }
-  .lang button[aria-pressed="true"] { color: var(--ink); background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 4px 12px rgba(60, 40, 120, .12); }
-  .nav-cta { font: 600 14px/1 var(--font); color: #fff !important; background: var(--ink); padding: 10px 16px; border-radius: 999px; text-decoration: none !important; }
-  :is(a, button):focus-visible { outline: 2px solid #0071e3; outline-offset: 3px; }
+  .nav a { color: var(--text-2); font-size: 14px; padding: 8px 12px; border-radius: 999px; transition: background .15s, color .15s; }
+  .nav a:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+  .lang { display: flex; padding: 3px; border-radius: 999px; background: rgba(0, 0, 0, .28); box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4); }
+  .lang button { font: 600 13px/1 var(--font); color: var(--text-2); background: none; border: 0; padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: all .24s var(--ease); }
+  .lang button[aria-pressed="true"] { color: #1a1205; background: linear-gradient(180deg, #fff, #eceef2); box-shadow: inset 0 1px 1px #fff, 0 4px 12px rgba(0, 0, 0, .35); }
+  .nav-cta { font: 600 14px/1 var(--font); color: #2a1a04; padding: 10px 16px; border-radius: 999px; background: linear-gradient(180deg, #fff1c2, #f5c451 50%, #c88a22);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .8), 0 6px 16px rgba(245, 196, 81, .35); }
+  :is(a, button, summary):focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-  /* Boutons */
-  .btn { display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px; border-radius: 999px; font: 600 17px/1 var(--font); text-decoration: none !important;
-    border: 0; cursor: pointer; transition: transform .15s var(--ease), background .15s, box-shadow .15s; }
+  /* ---------------- boutons ---------------- */
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 28px; border-radius: 999px; font: 600 16.5px/1 var(--font); border: 0; cursor: pointer;
+    transition: transform .15s var(--ease), filter .15s, background .15s; }
   .btn svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: scale(.97); }
-  .btn-dark { color: #fff; background: var(--ink); box-shadow: 0 8px 24px rgba(29, 29, 31, .22); }
-  .btn-dark:hover { background: #000; transform: translateY(-1px); }
-  .btn-glass { color: var(--ink); }
-  .btn-glass:hover { transform: translateY(-1px); }
-  .link-more { font-size: 17px; color: #0066cc; }
-  .link-more::after { content: " ›"; }
+  .btn-gold { color: #2a1a04; background: linear-gradient(180deg, #fff1c2 0%, #f5c451 48%, #c88a22 100%);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .85), inset 0 -2px 6px rgba(120, 70, 0, .35), 0 12px 34px rgba(245, 196, 81, .38); }
+  .btn-gold:hover { filter: brightness(1.06); }
+  .btn.glass { color: #fff; }
 
-  /* En-tête */
-  .hero { text-align: center; padding: 84px 0 30px; }
-  .eyebrow { font-size: 15px; font-weight: 600; color: var(--gold-2); letter-spacing: .02em; }
-  .logo { margin: 14px 0 0; font: 900 clamp(60px, 15vw, 132px)/1 "Cinzel Decorative", Georgia, serif; letter-spacing: 3px;
-    background: linear-gradient(180deg, #f6cf6b 0%, #d99a2b 45%, #a8700f 75%, #e8b24a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
-    filter: drop-shadow(0 2px 0 rgba(255, 255, 255, .9)) drop-shadow(0 12px 24px rgba(200, 138, 34, .25)); }
-  .logo span { background: linear-gradient(180deg, #ff8cc6, #e0408f 50%, #b0226a); -webkit-background-clip: text; background-clip: text; }
-  .headline { margin: 18px auto 0; max-width: 820px; font-size: clamp(34px, 6.4vw, 64px); line-height: 1.06; font-weight: 700; letter-spacing: -.035em; }
-  .grad { background: linear-gradient(90deg, #6e4bd8, #e0408f 55%, #d99a2b); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .lead { margin: 20px auto 0; max-width: 640px; font-size: clamp(18px, 2.4vw, 22px); line-height: 1.45; color: var(--ink-3); }
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
-  .meta { margin-top: 14px; font-size: 14px; color: var(--ink-4); }
+  /* ---------------- en-tête ---------------- */
+  .hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: center; padding: 70px 0 30px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi);
+    padding: 7px 14px; border-radius: 999px; }
+  .logo { margin: 18px 0 0; font: 900 clamp(58px, 9vw, 112px)/1 "Cinzel Decorative", Georgia, serif; letter-spacing: 3px;
+    background: linear-gradient(180deg, #fff8dc 0%, #f7d06a 38%, #c4831f 62%, #8a5410 78%, #ffe6a3 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 3px 0 #3d2204) drop-shadow(0 0 26px rgba(245, 196, 81, .45)); }
+  .logo span { background: linear-gradient(180deg, #ffd9f0, #ff5fb4 45%, #a3125f 80%, #ffb3dd); -webkit-background-clip: text; background-clip: text; }
+  .sub { margin: 10px 0 0; font: 700 clamp(14px, 1.8vw, 18px)/1.3 "Cinzel", serif; letter-spacing: .38em; color: #f3e6c4; text-shadow: 0 0 14px rgba(160, 110, 255, .9); }
+  .headline { margin: 24px 0 0; font: 700 clamp(30px, 4.4vw, 48px)/1.1 var(--font); letter-spacing: -.03em; }
+  .gold { background: linear-gradient(90deg, #ffe7a3, #f5c451 50%, #ff8cc6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { margin: 16px 0 0; max-width: 540px; font-size: clamp(17px, 2vw, 19px); color: var(--text-2); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .meta { margin-top: 14px; font-size: 13.5px; color: var(--text-3); }
 
-  /* Maquette : la carte et sa traduction en surimpression */
-  .showcase { position: relative; margin: 56px auto 0; max-width: 900px; padding: 34px; border-radius: 36px; }
-  .scene { position: relative; display: grid; grid-template-columns: 210px 1fr; gap: 28px; align-items: center; min-height: 340px; padding: 26px;
-    border-radius: 24px; overflow: hidden; background: radial-gradient(70% 90% at 25% 30%, #4b2a8a, #1b1030 75%); }
-  .scene::before { content: ""; position: absolute; inset: 0; background: repeating-conic-gradient(from 0deg at 25% 40%, rgba(255, 210, 120, .08) 0 6deg, transparent 6deg 18deg); }
-  .mock-card { position: relative; width: 210px; aspect-ratio: 59 / 86; border-radius: 12px; padding: 10px; color: #2b1a05;
-    background: linear-gradient(160deg, #f0c27a, #c98a35 60%, #9c6420); box-shadow: 0 20px 50px rgba(0, 0, 0, .5), inset 0 0 0 2px rgba(255, 255, 255, .25);
-    transform: rotate(-4deg); animation: float 6s ease-in-out infinite; }
-  @keyframes float { 50% { transform: rotate(-4deg) translateY(-8px); } }
-  .mock-card .name { font: 700 12px/1.2 var(--font); background: rgba(255, 255, 255, .55); border-radius: 4px; padding: 4px 6px; }
-  .mock-card .art { margin-top: 8px; aspect-ratio: 1; border-radius: 4px; background: radial-gradient(circle at 50% 40%, #ffe7a8 0 12%, #e0408f 13% 22%, #6e4bd8 23% 48%, #2a1650 49%);
-    display: grid; place-items: center; font: 900 46px/1 "Cinzel Decorative", serif; color: #ffe7a8; text-shadow: 0 0 18px #ff8cc6; }
-  .mock-card .stats { margin-top: 8px; font: 600 11px/1.3 var(--font); background: rgba(255, 255, 255, .5); border-radius: 4px; padding: 5px 6px; text-align: right; }
-  .cursor { position: absolute; left: 186px; top: 200px; width: 22px; height: 22px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .5)); }
-  .hint { position: absolute; left: 36px; bottom: 22px; font: 600 12px/1 var(--font); color: rgba(255, 255, 255, .85); display: flex; gap: 6px; align-items: center; }
-  .overlay { padding: 20px 22px; border-radius: 20px; color: var(--ink); }
-  .overlay .tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--violet); background: rgba(110, 75, 216, .12); border-radius: 999px; padding: 4px 10px; }
-  .overlay h3 { margin: 10px 0 2px; font-size: 22px; letter-spacing: -.02em; }
-  .overlay .type { font-size: 13px; color: var(--ink-3); }
-  .overlay p { margin: 12px 0 0; font-size: 15px; color: var(--ink-2); line-height: 1.5; }
-  .overlay .atk { margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  /* éventail de cartes */
+  .fan { position: relative; height: 520px; perspective: 1400px; }
+  .fan .ygo { position: absolute; left: 50%; top: 50%; width: 250px; transition: transform .6s var(--ease); }
+  .fan .c1 { transform: translate(-112%, -46%) rotate(-12deg); z-index: 1; }
+  .fan .c2 { transform: translate(-50%, -54%) rotate(0deg) scale(1.06); z-index: 3; animation: hover 6s ease-in-out infinite; }
+  .fan .c3 { transform: translate(12%, -46%) rotate(12deg); z-index: 2; }
+  .fan:hover .c1 { transform: translate(-122%, -48%) rotate(-16deg); }
+  .fan:hover .c3 { transform: translate(22%, -48%) rotate(16deg); }
+  @keyframes hover { 50% { transform: translate(-50%, -57%) scale(1.06); } }
+  .fan .halo { position: absolute; left: 50%; top: 50%; width: 460px; height: 460px; translate: -50% -50%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 196, 81, .35), rgba(143, 107, 255, .18) 45%, transparent 70%); filter: blur(10px); }
+  .fan .ring { position: absolute; left: 50%; top: 50%; width: 430px; height: 430px; translate: -50% -50%; border-radius: 50%;
+    border: 1px solid rgba(245, 196, 81, .35); box-shadow: 0 0 40px rgba(245, 196, 81, .15) inset; animation: spin 40s linear infinite; }
+  .fan .ring::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; border: 1px dashed rgba(245, 196, 81, .3); }
+  @media (prefers-reduced-motion: reduce) { .fan .c2, .fan .ring { animation: none; } }
 
-  /* Sections */
+  /* ---------------- CARTE YU-GI-OH! (cadre authentique, illustration originale) ---------------- */
+  .ygo { --frame: linear-gradient(160deg, #e8a35c, #c7742f 55%, #9a531c); aspect-ratio: 59 / 86; border-radius: 3.4% / 2.3%; padding: 3.6% 4.2% 3%;
+    background: var(--frame); color: #1a1208; display: flex; flex-direction: column; container-type: inline-size;
+    box-shadow: 0 0 0 1px #2a1c0c, 0 0 0 4px #13100c, 0 24px 60px rgba(0, 0, 0, .6), 0 0 40px rgba(245, 196, 81, .12); position: relative; overflow: hidden; }
+  .ygo::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .35) 45%, rgba(255, 220, 255, .15) 50%, transparent 62%); background-size: 260% 100%;
+    animation: foil 6s ease-in-out infinite; mix-blend-mode: soft-light; }
+  @keyframes foil { 0%, 30% { background-position: 120% 0; } 70%, 100% { background-position: -40% 0; } }
+  .ygo.spell { --frame: linear-gradient(160deg, #3fb9a0, #1d8a77 55%, #136357); }
+  .ygo.trap { --frame: linear-gradient(160deg, #d0609f, #a83d7c 55%, #7c2a5c); }
+  .ygo .nm { display: flex; align-items: center; justify-content: space-between; gap: 4%; height: 8.6cqw; padding: 0 2.2%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .2)); border: .6cqw solid rgba(60, 35, 10, .55); border-radius: .8cqw;
+    font: 700 6.4cqw/1 "Cinzel", Georgia, serif; letter-spacing: .02em; white-space: nowrap; }
+  .ygo.spell .nm, .ygo.trap .nm { color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .6); background: linear-gradient(180deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .05)); }
+  .ygo .attr { width: 8cqw; height: 8cqw; border-radius: 50%; flex: none; display: grid; place-items: center; font: 700 3.3cqw/1 var(--font); color: #fff;
+    box-shadow: inset 0 0 0 .5cqw rgba(255, 255, 255, .7), 0 .3cqw .8cqw rgba(0, 0, 0, .4); }
+  .attr.light { background: radial-gradient(circle at 35% 30%, #fff6c8, #e8b830 60%, #9c7410); color: #4a3200; }
+  .attr.dark { background: radial-gradient(circle at 35% 30%, #c7a2ff, #6b2fd6 60%, #2e0f6b); }
+  .attr.spell { background: radial-gradient(circle at 35% 30%, #a6ffe9, #19a586 60%, #0b5848); }
+  .attr.trap { background: radial-gradient(circle at 35% 30%, #ffc3e4, #c43a86 60%, #6b1446); }
+  .ygo .lv { display: flex; justify-content: flex-end; gap: .9cqw; height: 7cqw; align-items: center; padding: 0 1%; }
+  .ygo .lv i { width: 5.4cqw; height: 5.4cqw; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe08a, #e26b12 55%, #8d2c00);
+    box-shadow: 0 0 0 .4cqw #2b1505, inset 0 0 .8cqw rgba(255, 255, 255, .4); position: relative; }
+  .ygo .lv i::after { content: "★"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 3.6cqw; color: #fff4c4; }
+  .ygo .lv.txt { justify-content: flex-end; font: 700 5cqw/1 "Cinzel", serif; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .6); }
+  .ygo .art { aspect-ratio: 1; margin: 0 3.8%; border: 1.2cqw solid #1d140b; box-shadow: inset 0 0 0 .5cqw rgba(255, 255, 255, .15), 0 0 0 .4cqw rgba(255, 235, 200, .4); overflow: hidden; background: #110a1c; }
+  .ygo .art svg { display: block; width: 100%; height: 100%; }
+  .ygo .meta-row { height: 5cqw; display: flex; justify-content: flex-end; align-items: center; padding: 0 4%; font: 600 2.6cqw/1 var(--font); color: rgba(0, 0, 0, .55); }
+  .ygo .box { flex: 1; margin: 0 1.6%; padding: 2.4% 3%; background: linear-gradient(180deg, #f3e7c8, #e4d3a8); border: .6cqw solid rgba(60, 35, 10, .55); border-radius: .4cqw;
+    display: flex; flex-direction: column; min-height: 0; }
+  .ygo .tl { font: 700 3.4cqw/1.2 Georgia, "Times New Roman", serif; }
+  .ygo .fx { margin-top: 1.2cqw; font: 3.05cqw/1.3 Georgia, "Times New Roman", serif; color: #2a1d0c; overflow: hidden; }
+  .ygo .ad { margin-top: auto; border-top: .4cqw solid #1a1208; padding-top: 1cqw; text-align: right; font: 700 3.5cqw/1 Georgia, serif; }
+  .ygo .id { position: absolute; left: 5%; bottom: 1.2%; font: 2.2cqw/1 var(--font); color: rgba(0, 0, 0, .55); }
+  .ygo.spell .id, .ygo.trap .id { color: rgba(255, 255, 255, .6); }
+
+  /* ---------------- sections ---------------- */
   section { padding: 110px 0 0; scroll-margin-top: 80px; }
-  .sec-head { text-align: center; max-width: 780px; margin: 0 auto 44px; }
-  .kicker { font-size: 15px; font-weight: 600; color: var(--pink); }
-  .sec-head h2 { margin: 8px 0 0; font-size: clamp(32px, 5.2vw, 52px); line-height: 1.08; font-weight: 700; letter-spacing: -.03em; }
-  .sec-head p { margin: 16px auto 0; font-size: clamp(17px, 2vw, 21px); color: var(--ink-3); max-width: 660px; }
+  .sec-head { text-align: center; max-width: 800px; margin: 0 auto 44px; }
+  .kicker { font: 700 13px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--pink); }
+  .sec-head h2 { margin: 12px 0 0; font: 700 clamp(30px, 5vw, 50px)/1.1 "Cinzel", Georgia, serif; letter-spacing: .01em; }
+  .sec-head h2::after { content: ""; display: block; width: 80px; height: 2px; margin: 18px auto 0; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .sec-head p { margin: 16px auto 0; font-size: clamp(16.5px, 2vw, 19px); color: var(--text-2); max-width: 680px; }
 
+  /* le jeu DMO */
+  .dmo { display: grid; grid-template-columns: 1fr 1fr; gap: 0; overflow: hidden; }
+  .dmo .txt { padding: 44px; }
+  .dmo .txt h2 { margin: 12px 0 0; font: 700 clamp(28px, 4vw, 42px)/1.12 "Cinzel", serif; }
+  .dmo .txt p { color: var(--text-2); }
+  .dmo ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+  .dmo li { display: flex; gap: 12px; align-items: flex-start; color: var(--text-2); }
+  .dmo li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 8px; transform: rotate(45deg); background: linear-gradient(135deg, #ffe7a3, #c88a22); box-shadow: 0 0 10px rgba(245, 196, 81, .6); }
+  .dmo .duel { position: relative; min-height: 380px; background: radial-gradient(60% 60% at 50% 50%, rgba(143, 107, 255, .35), transparent 70%); display: grid; place-items: center; }
+  .duel .field { position: relative; width: 86%; aspect-ratio: 4 / 3; border-radius: 18px; transform: perspective(900px) rotateX(48deg); transform-origin: 50% 70%;
+    background: repeating-linear-gradient(90deg, rgba(245, 196, 81, .12) 0 1px, transparent 1px 20%), repeating-linear-gradient(0deg, rgba(245, 196, 81, .12) 0 1px, transparent 1px 33.33%),
+      radial-gradient(circle at 50% 50%, rgba(143, 107, 255, .35), rgba(20, 10, 40, .8)); border: 1px solid rgba(245, 196, 81, .5); box-shadow: 0 30px 60px rgba(0, 0, 0, .5), 0 0 40px rgba(143, 107, 255, .3); }
+  .duel .slot { position: absolute; width: 13%; aspect-ratio: 59 / 86; border-radius: 3px; box-shadow: 0 6px 14px rgba(0, 0, 0, .5); }
+  .slot.m { background: linear-gradient(160deg, #e8a35c, #9a531c); } .slot.s { background: linear-gradient(160deg, #3fb9a0, #136357); } .slot.t { background: linear-gradient(160deg, #d0609f, #7c2a5c); }
+  .slot.back { background: radial-gradient(circle, #6b3b14 0 18%, #2b1408 19% 24%, #4e2a0f 25%); border: 2px solid #c58a2a; }
+  .duel .vs { position: absolute; font: 900 34px/1 "Cinzel Decorative", serif; color: var(--gold); text-shadow: 0 0 20px rgba(245, 196, 81, .8); }
+  .duel .lp { position: absolute; font: 700 12px/1 var(--font); padding: 6px 10px; border-radius: 999px; }
+  .duel .lp.a { left: 6%; bottom: 10%; } .duel .lp.b { right: 6%; top: 10%; }
+  .disclaimer-sm { margin-top: 18px; font-size: 13px; color: var(--text-3); }
+
+  /* problème / solution */
   .why { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
   .why .glass { padding: 30px; }
-  .why .big { font-size: 44px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
-  .why h3 { margin: 14px 0 6px; font-size: 21px; letter-spacing: -.02em; }
-  .why p { margin: 0; color: var(--ink-3); }
+  .why .big { font: 900 44px/1 "Cinzel", serif; }
+  .why h3 { margin: 14px 0 6px; font-size: 20px; }
+  .why p { margin: 0; color: var(--text-2); }
 
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; counter-reset: s; }
+  /* démonstration */
+  .demo { display: grid; grid-template-columns: 300px 1fr; gap: 34px; align-items: center; padding: 34px; }
+  .demo .ygo { width: 100%; transform: rotate(-3deg); }
+  .bubble { padding: 24px; border-radius: 22px; }
+  .bubble .tag { display: inline-flex; gap: 6px; align-items: center; font: 600 12px/1 var(--font); color: #2a1a04; padding: 6px 10px; border-radius: 999px;
+    background: linear-gradient(180deg, #fff1c2, #f5c451 50%, #c88a22); }
+  .bubble h3 { margin: 12px 0 2px; font: 700 26px/1.15 "Cinzel", serif; }
+  .bubble .type { font-size: 14px; color: var(--text-3); }
+  .bubble p { margin: 14px 0 0; color: var(--text); font-size: 16px; }
+  .bubble .stats { display: flex; gap: 10px; margin-top: 16px; }
+  .bubble .stats span { font: 600 13px/1 var(--font); padding: 8px 12px; border-radius: 999px; background: rgba(255, 255, 255, .12); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .35); }
+  .demo-cap { margin-top: 14px; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-3); }
+  kbd { font: 600 13px/1 var(--font); padding: 4px 9px; border-radius: 8px; color: #fff; background: rgba(255, 255, 255, .16); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5), 0 2px 5px rgba(0, 0, 0, .35); }
+
+  /* étapes */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
   .step { padding: 30px; }
-  .step .n { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font: 700 18px/1 var(--font); color: #fff;
-    background: linear-gradient(180deg, #8a6cf0, #6e4bd8); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5), 0 6px 16px rgba(110, 75, 216, .35); }
-  .step h3 { margin: 18px 0 6px; font-size: 21px; letter-spacing: -.02em; }
-  .step p { margin: 0; color: var(--ink-3); }
-  kbd { font: 600 14px/1 var(--font); padding: 4px 9px; border-radius: 8px; color: var(--ink); background: #fff; box-shadow: 0 1px 0 rgba(0, 0, 0, .12), 0 2px 6px rgba(60, 40, 120, .12); }
+  .step .n { width: 46px; height: 46px; display: grid; place-items: center; font: 900 20px/1 "Cinzel", serif; color: #2a1a04; border-radius: 50%;
+    background: linear-gradient(180deg, #fff1c2, #f5c451 50%, #c88a22); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .8), 0 6px 18px rgba(245, 196, 81, .35); }
+  .step h3 { margin: 18px 0 6px; font-size: 20px; }
+  .step p { margin: 0; color: var(--text-2); }
 
-  /* Grille « bento » */
+  /* fonctions */
   .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
-  .tile { padding: 32px; display: flex; flex-direction: column; min-height: 260px; }
-  .tile.w3 { grid-column: span 3; } .tile.w2 { grid-column: span 2; } .tile.w4 { grid-column: span 4; } .tile.w6 { grid-column: span 6; }
-  .tile .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; color: #fff; margin-bottom: 20px; flex: none; }
+  .tile { padding: 30px; display: flex; flex-direction: column; min-height: 240px; }
+  .tile.w4 { grid-column: span 4; } .tile.w2 { grid-column: span 2; } .tile.w3 { grid-column: span 3; }
+  .tile .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 18px; color: #fff; }
   .tile .ico svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-  .i-violet { background: linear-gradient(180deg, #9d84ff, #6e4bd8); box-shadow: 0 8px 20px rgba(110, 75, 216, .35); }
-  .i-pink { background: linear-gradient(180deg, #ff7fbf, #e0408f); box-shadow: 0 8px 20px rgba(224, 64, 143, .32); }
-  .i-gold { background: linear-gradient(180deg, #f6cf6b, #c88a22); box-shadow: 0 8px 20px rgba(200, 138, 34, .35); }
-  .i-blue { background: linear-gradient(180deg, #6cb6ff, #1f7ae0); box-shadow: 0 8px 20px rgba(31, 122, 224, .3); }
-  .i-green { background: linear-gradient(180deg, #5fe0a2, #18a865); box-shadow: 0 8px 20px rgba(24, 168, 101, .3); }
-  .i-dark { background: linear-gradient(180deg, #4a4a4f, #1d1d1f); box-shadow: 0 8px 20px rgba(0, 0, 0, .25); }
-  .tile h3 { margin: 0 0 8px; font-size: 24px; line-height: 1.15; letter-spacing: -.025em; }
-  .tile p { margin: 0; color: var(--ink-3); }
-  .tile .stat { margin-top: auto; padding-top: 22px; font-size: 40px; font-weight: 700; letter-spacing: -.03em; }
-  .tile .stat small { display: block; font-size: 14px; font-weight: 500; color: var(--ink-4); letter-spacing: 0; }
+  .i-m { background: linear-gradient(160deg, #e8a35c, #9a531c); box-shadow: 0 8px 20px rgba(232, 163, 92, .35); }
+  .i-s { background: linear-gradient(160deg, #3fb9a0, #136357); box-shadow: 0 8px 20px rgba(63, 185, 160, .35); }
+  .i-t { background: linear-gradient(160deg, #d0609f, #7c2a5c); box-shadow: 0 8px 20px rgba(208, 96, 159, .35); }
+  .i-x { background: linear-gradient(160deg, #a18bff, #4d2fb0); box-shadow: 0 8px 20px rgba(143, 107, 255, .35); }
+  .i-g { background: linear-gradient(160deg, #fff1c2, #c88a22); color: #2a1a04 !important; box-shadow: 0 8px 20px rgba(245, 196, 81, .35); }
+  .tile h3 { margin: 0 0 8px; font-size: 22px; line-height: 1.2; }
+  .tile p { margin: 0; color: var(--text-2); }
+  .tile .stat { margin-top: auto; padding-top: 20px; font: 900 38px/1 "Cinzel", serif; color: var(--gold); }
+  .tile .stat small { display: block; margin-top: 6px; font: 500 13.5px/1.2 var(--font); color: var(--text-3); }
 
-  /* Mises à jour */
+  /* mises à jour */
   .update { display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center; padding: 44px; }
-  .update h2 { margin: 6px 0 0; font-size: clamp(30px, 4.4vw, 44px); line-height: 1.1; letter-spacing: -.03em; }
-  .update p { color: var(--ink-3); font-size: 18px; }
+  .update h2 { margin: 12px 0 0; font: 700 clamp(28px, 4vw, 40px)/1.15 "Cinzel", serif; }
+  .update p { color: var(--text-2); font-size: 17px; }
   .toast { padding: 18px 20px; border-radius: 20px; }
-  .toast .row { display: flex; align-items: center; gap: 12px; }
-  .toast .dot { width: 40px; height: 40px; border-radius: 12px; flex: none; display: grid; place-items: center; color: #fff; background: linear-gradient(180deg, #5fe0a2, #18a865); }
-  .toast .dot svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-  .toast strong { display: block; }
-  .toast small { color: var(--ink-3); }
-  .toast ul { margin: 14px 0 0; padding-left: 20px; color: var(--ink-2); font-size: 15px; }
   .toast + .toast { margin-top: 12px; }
+  .toast .row { display: flex; align-items: center; gap: 12px; }
+  .toast .dot { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex: none; color: #fff; background: linear-gradient(160deg, #5fe0a2, #18a865); }
+  .toast .dot svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .toast strong { display: block; } .toast small { color: var(--text-3); }
+  .toast ul { margin: 12px 0 0; padding-left: 20px; color: var(--text-2); font-size: 15px; }
 
-  /* Raccourcis */
+  /* raccourcis */
   .keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
   .key { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 20px; }
-  .key kbd { min-width: 56px; text-align: center; }
-  .key span { color: var(--ink-2); font-size: 15px; }
+  .key kbd { min-width: 58px; text-align: center; }
+  .key span { color: var(--text-2); font-size: 15px; }
 
-  /* Communauté */
-  .community { text-align: center; padding: 50px 34px; }
-  .community .flag { display: inline-block; width: 54px; height: 36px; border-radius: 8px; background: linear-gradient(90deg, #1f4fbf 33.3%, #fff 33.3% 66.6%, #e63946 66.6%);
-    box-shadow: 0 6px 18px rgba(31, 79, 191, .2), inset 0 0 0 1px rgba(0, 0, 0, .06); }
-  .community h2 { margin: 18px 0 0; font-size: clamp(28px, 4.4vw, 42px); letter-spacing: -.03em; line-height: 1.1; }
-  .community p { margin: 16px auto 0; max-width: 680px; color: var(--ink-3); font-size: 18px; }
+  /* communauté */
+  .community { text-align: center; padding: 52px 34px; }
+  .community .flag { display: inline-block; width: 56px; height: 37px; border-radius: 8px; background: linear-gradient(90deg, #1f4fbf 33.3%, #fff 33.3% 66.6%, #e63946 66.6%);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 255, 255, .3); }
+  .community h2 { margin: 18px 0 0; font: 700 clamp(26px, 4vw, 40px)/1.15 "Cinzel", serif; }
+  .community p { margin: 16px auto 0; max-width: 700px; color: var(--text-2); font-size: 17.5px; }
   .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 24px; }
-  .pill { padding: 9px 16px; border-radius: 999px; font-size: 15px; font-weight: 600; color: var(--ink-2); }
+  .pill { padding: 9px 16px; border-radius: 999px; font-size: 14.5px; font-weight: 600; }
 
   /* FAQ */
   .faq { display: grid; gap: 12px; }
-  .faq details { border-radius: 22px; padding: 0; }
-  .faq summary { list-style: none; cursor: pointer; padding: 22px 26px; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+  .faq details { border-radius: 22px; }
+  .faq summary { list-style: none; cursor: pointer; padding: 22px 26px; font-size: 17.5px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; margin-left: auto; font-size: 26px; font-weight: 400; color: var(--ink-4); transition: transform .24s var(--ease); }
+  .faq summary::after { content: "+"; margin-left: auto; font-size: 26px; font-weight: 400; color: var(--gold); transition: transform .24s var(--ease); }
   .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq .ans { padding: 0 26px 22px; color: var(--ink-3); }
+  .faq .ans { padding: 0 26px 22px; color: var(--text-2); }
 
-  /* Téléchargement + contact */
-  .download { text-align: center; padding: 60px 30px; }
-  .download h2 { margin: 0; font-size: clamp(34px, 5.6vw, 56px); letter-spacing: -.035em; line-height: 1.05; }
-  .download p { color: var(--ink-3); font-size: 19px; margin: 14px auto 0; max-width: 560px; }
+  /* téléchargement + contact */
+  .download { position: relative; overflow: hidden; text-align: center; padding: 64px 30px; }
+  .download h2 { margin: 0; font: 900 clamp(34px, 5.4vw, 56px)/1.05 "Cinzel Decorative", serif; color: var(--gold); text-shadow: 0 0 30px rgba(245, 196, 81, .4); }
+  .download p { color: var(--text-2); font-size: 18px; margin: 16px auto 0; max-width: 560px; }
+  .download .actions { justify-content: center; }
   .contact { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 18px; }
   .ccard { display: flex; align-items: center; gap: 14px; padding: 20px; border-radius: 22px; }
   .ccard .ico { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; color: #fff; flex: none; }
   .ccard .ico svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .i-discord { background: linear-gradient(180deg, #8a95ff, #5865f2); box-shadow: 0 8px 20px rgba(88, 101, 242, .35); }
-  .ccard small { display: block; color: var(--ink-4); font-size: 13px; }
+  .i-discord { background: linear-gradient(180deg, #8a95ff, #5865f2); box-shadow: 0 8px 20px rgba(88, 101, 242, .4); }
+  .ccard small { display: block; color: var(--text-3); font-size: 13px; }
   .ccard strong { font-size: 19px; }
-  .copy { margin-left: auto; font: 600 14px/1 var(--font); color: var(--ink); padding: 10px 15px; border-radius: 999px; border: 0; cursor: pointer; background: #fff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 4px 12px rgba(60, 40, 120, .10); }
-  .copy:hover { background: #f5f5f7; }
+  .copy { margin-left: auto; font: 600 13.5px/1 var(--font); color: #1a1205; padding: 10px 15px; border-radius: 999px; border: 0; cursor: pointer;
+    background: linear-gradient(180deg, #fff, #eceef2); box-shadow: inset 0 1px 1px #fff, 0 4px 12px rgba(0, 0, 0, .3); }
 
-  footer { margin-top: 110px; padding: 28px 16px 40px; border-top: 1px solid rgba(0, 0, 0, .08); background: rgba(255, 255, 255, .4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-  footer .wrap { font-size: 12.5px; color: var(--ink-4); }
+  footer { margin-top: 110px; padding: 30px 16px 40px; border-top: 1px solid rgba(255, 255, 255, .1); background: rgba(0, 0, 0, .25); }
+  footer .wrap { font-size: 12.5px; color: var(--text-3); }
   footer ul { margin: 0 0 16px; padding-left: 18px; }
   footer li { margin: 5px 0; }
-  footer .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(0, 0, 0, .08); padding-top: 14px; }
+  footer .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(255, 255, 255, .1); padding-top: 14px; }
 
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .mock-card { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .ygo::after { animation: none; } }
 
-  @media (max-width: 860px) {
-    .bento { grid-template-columns: 1fr 1fr; }
-    .tile.w3, .tile.w2, .tile.w4, .tile.w6 { grid-column: span 2; }
-    .update { grid-template-columns: 1fr; padding: 30px; }
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding-top: 50px; }
+    .hero .lead { margin-inline: auto; } .hero .actions { justify-content: center; }
+    .fan { height: 440px; } .fan .ygo { width: 210px; }
+    .dmo, .update { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr 1fr; } .tile.w4, .tile.w3, .tile.w2 { grid-column: span 2; }
+    .demo { grid-template-columns: 1fr; justify-items: center; } .demo .ygo { max-width: 260px; }
   }
   @media (max-width: 640px) {
-    .nav { display: none; }
-    .lang { margin-left: auto; }
-    .nav-cta { display: none; }
-    .hero { padding: 54px 0 10px; }
-    .showcase { padding: 14px; border-radius: 28px; }
-    .scene { grid-template-columns: 1fr; justify-items: center; padding: 22px 16px 46px; }
-    .mock-card { width: 160px; }
-    .cursor { left: calc(50% + 50px); top: 150px; }
-    .tile { min-height: 0; padding: 26px; }
-    section { padding-top: 80px; }
+    .nav, .nav-cta { display: none; } .lang { margin-left: auto; }
+    .fan { height: 360px; } .fan .ygo { width: 160px; }
+    .fan .halo, .fan .ring { width: 320px; height: 320px; }
+    .dmo .txt, .update { padding: 28px; } .demo { padding: 20px; }
+    section { padding-top: 80px; } .tile { min-height: 0; padding: 26px; }
     .ccard { flex-wrap: wrap; }
   }
 </style>
 </head>
 <body>
-<div class="ambient" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="realm" aria-hidden="true"><div class="rays"></div><div class="stars"></div></div>
+
+<!-- Illustrations originales (aucune image de carte officielle) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="sky1" cx="50%" cy="38%" r="70%"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".25" stop-color="#f08ac0"/><stop offset=".6" stop-color="#5a2fb8"/><stop offset="1" stop-color="#120828"/></radialGradient>
+    <radialGradient id="sky2" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#c9fff2"/><stop offset=".3" stop-color="#2fbfa4"/><stop offset=".7" stop-color="#0d4f60"/><stop offset="1" stop-color="#06141f"/></radialGradient>
+    <radialGradient id="sky3" cx="50%" cy="55%" r="75%"><stop offset="0" stop-color="#ffd0ea"/><stop offset=".3" stop-color="#c43a86"/><stop offset=".7" stop-color="#3a0f3a"/><stop offset="1" stop-color="#12040f"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#9a6416"/></linearGradient>
+    <symbol id="art-guardian" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="url(#sky1)"/>
+      <circle cx="50" cy="40" r="26" fill="none" stroke="url(#gold)" stroke-width="1.2" opacity=".8"/>
+      <circle cx="50" cy="40" r="20" fill="none" stroke="#ffe9a8" stroke-width=".4" stroke-dasharray="2 2" opacity=".8"/>
+      <path d="M50 22 L60 52 L50 47 L40 52 Z" fill="url(#gold)"/>
+      <path d="M30 100 C32 74 40 62 50 58 C60 62 68 74 70 100 Z" fill="#1a0b33"/>
+      <path d="M38 100 C40 80 45 70 50 66 C55 70 60 80 62 100 Z" fill="#3b1d78"/>
+      <path d="M50 58 L44 66 L50 63 L56 66 Z" fill="url(#gold)"/>
+      <text x="50" y="45" text-anchor="middle" font-family="Cinzel Decorative, serif" font-weight="900" font-size="14" fill="#ff8cc6" opacity=".95">7</text>
+      <g fill="#fff"><circle cx="15" cy="15" r=".8"/><circle cx="84" cy="22" r=".6"/><circle cx="78" cy="10" r=".5"/><circle cx="20" cy="30" r=".5"/></g>
+    </symbol>
+    <symbol id="art-seal" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="url(#sky2)"/>
+      <g stroke="#c9fff2" stroke-width=".4" opacity=".45"><path d="M50 0 V100 M0 50 H100 M15 15 L85 85 M85 15 L15 85"/></g>
+      <circle cx="50" cy="52" r="32" fill="none" stroke="#c9fff2" stroke-width=".8" opacity=".7"/>
+      <path d="M50 22 L78 72 L22 72 Z" fill="none" stroke="url(#gold)" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M36 58 Q50 44 64 58 Q50 70 36 58 Z" fill="none" stroke="url(#gold)" stroke-width="1.8"/>
+      <circle cx="50" cy="58" r="4.2" fill="url(#gold)"/>
+      <path d="M50 62 V70 M45 62 L42 69 M55 62 L58 69" stroke="url(#gold)" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="art-maze" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="url(#sky3)"/>
+      <g fill="none" stroke="#ffd0ea" stroke-width="1.4" opacity=".75">
+        <rect x="14" y="14" width="72" height="72"/><path d="M14 30 H70 V70 H30 V44 H56 V58 H44"/><path d="M86 46 H78 M30 86 V78"/>
+      </g>
+      <g stroke="#ff5fb4" stroke-width="1.8"><path d="M8 92 L28 72 M92 8 L72 28 M8 8 L28 28 M92 92 L72 72"/></g>
+      <circle cx="50" cy="51" r="5" fill="#fff" opacity=".9"/><circle cx="50" cy="51" r="11" fill="none" stroke="#fff" stroke-width=".6" opacity=".6"/>
+    </symbol>
+  </defs>
+</svg>
 
 <div class="topbar">
   <div class="bar glass strong">
     <a class="brand" href="#">SE<span>7</span>EN</a>
     <nav class="nav">
+      <a href="#jeu" data-i18n="nav_game">Le jeu</a>
       <a href="#pourquoi" data-i18n="nav_why">À quoi ça sert</a>
       <a href="#fonctions" data-i18n="nav_features">Fonctions</a>
       <a href="#faq" data-i18n="nav_faq">Questions</a>
@@ -261,62 +367,126 @@
 <main class="wrap">
   <!-- ======================= EN-TÊTE ======================= -->
   <header class="hero">
-    <div class="eyebrow" data-i18n="eyebrow">Pour Yu-Gi-Oh! Duel Monsters Online</div>
-    <h1 class="logo">SE<span>7</span>EN</h1>
-    <p class="headline" data-i18n="headline">Chaque carte. <span class="grad">En français.</span> Instantanément.</p>
-    <p class="lead" data-i18n="lead">Pointe une carte dans le jeu, appuie sur une touche : son effet s'affiche en français, directement par-dessus DMO.</p>
-    <div class="actions">
-      <a class="btn btn-dark" href="https://github.com/se7enclaude/dmo-assistant/releases/latest">
-        <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="cta">Télécharger gratuitement</span>
-      </a>
-      <a class="btn btn-glass glass strong" href="#comment"><span data-i18n="cta2">Voir comment ça marche</span></a>
+    <div>
+      <span class="eyebrow glass" data-i18n="eyebrow">Pour Yu-Gi-Oh! Duel Monsters Online</span>
+      <h1 class="logo">SE<span>7</span>EN</h1>
+      <p class="sub">DMO ASSISTANT</p>
+      <p class="headline" data-i18n="headline">Chaque carte, <span class="gold">en français</span>, en plein duel.</p>
+      <p class="lead" data-i18n="lead">Pointe une carte dans DMO, appuie sur une touche : son effet s'affiche en français, directement par-dessus le jeu. Gratuit, pour toute la communauté.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="https://github.com/se7enclaude/dmo-assistant/releases/latest"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="cta">Télécharger gratuitement</span></a>
+        <a class="btn glass" href="#demo"><span data-i18n="cta2">Voir la démo</span></a>
+      </div>
+      <div class="meta"><span data-i18n="meta">Windows 10 et 11 · Gratuit · Sans but lucratif · Version</span> <span id="ver">1.0.0</span></div>
     </div>
-    <div class="meta"><span data-i18n="meta">Windows 10 et 11 · Gratuit · Version</span> <span id="ver">1.0.0</span></div>
 
-    <div class="showcase glass lg reveal" aria-hidden="true">
-      <div class="scene">
-        <div class="mock-card">
-          <div class="name">Gardien Se7en</div>
-          <div class="art">7</div>
-          <div class="stats">ATK/2400 &nbsp; DEF/1700</div>
-        </div>
-        <svg class="cursor" viewBox="0 0 24 24"><path d="M4 2l15 9-6.5 1.5L16 20l-2.6 1.3-3.5-7.4L4 18z" fill="#fff" stroke="#1d1d1f" stroke-width="1.2" stroke-linejoin="round"/></svg>
-        <div class="overlay glass strong lg">
-          <span class="tag" data-i18n="demo_tag">Reconnue · traduite</span>
-          <h3>Gardien Se7en</h3>
-          <div class="type" data-i18n="demo_type">Monstre à Effet · LUMIÈRE · Niveau 6</div>
-          <p data-i18n="demo_text">Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat. Si cette carte est envoyée au Cimetière, piochez 1 carte.</p>
-          <div class="atk">ATK 2400 · DEF 1700</div>
-        </div>
-        <div class="hint"><kbd>F8</kbd> <span data-i18n="demo_hint">sur la carte visée</span></div>
+    <div class="fan" aria-hidden="true">
+      <div class="halo"></div><div class="ring"></div>
+      <div class="ygo spell c1">
+        <div class="nm"><span>Sceau Millénaire</span><span class="attr spell">MAG</span></div>
+        <div class="lv txt">[Carte Magie ✦]</div>
+        <div class="art"><svg><use href="#art-seal"/></svg></div>
+        <div class="meta-row">SE7-FR002</div>
+        <div class="box"><div class="fx">Ajoutez 1 monstre « Se7en » depuis votre Deck à votre main. Vous ne pouvez activer qu'1 « Sceau Millénaire » par tour.</div></div>
+        <div class="id">Se7en · exemple</div>
+      </div>
+      <div class="ygo c2">
+        <div class="nm"><span>Gardien Se7en</span><span class="attr light">LUM</span></div>
+        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="art"><svg><use href="#art-guardian"/></svg></div>
+        <div class="meta-row">SE7-FR001</div>
+        <div class="box"><div class="tl">[Magicien / Effet]</div><div class="fx">Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.</div><div class="ad">ATK/2700 &nbsp;DEF/2100</div></div>
+        <div class="id">Se7en · exemple</div>
+      </div>
+      <div class="ygo trap c3">
+        <div class="nm"><span>Labyrinthe d'Ombre</span><span class="attr trap">PIÈ</span></div>
+        <div class="lv txt">[Carte Piège ∞]</div>
+        <div class="art"><svg><use href="#art-maze"/></svg></div>
+        <div class="meta-row">SE7-FR003</div>
+        <div class="box"><div class="fx">Quand un monstre de votre adversaire déclare une attaque : annulez l'attaque, puis terminez la Battle Phase.</div></div>
+        <div class="id">Se7en · exemple</div>
       </div>
     </div>
   </header>
 
-  <!-- ======================= À QUOI ÇA SERT ======================= -->
-  <section id="pourquoi">
-    <div class="sec-head reveal">
-      <div class="kicker" data-i18n="why_k">À quoi ça sert</div>
-      <h2 data-i18n="why_t">Joue sans buter sur l'anglais.</h2>
-      <p data-i18n="why_p">Dans DMO, les cartes sont en anglais et leurs effets sont parfois longs et techniques. DMO Assistant les lit à ta place et te les explique en français, au moment où tu en as besoin.</p>
-    </div>
-    <div class="why">
-      <div class="glass reveal"><div class="big grad">15 000</div><h3 data-i18n="w1_t">cartes reconnues</h3><p data-i18n="w1_p">Par leur illustration, même quand le nom n'est pas affiché. Et l'appli apprend les illustrations propres à DMO.</p></div>
-      <div class="glass reveal"><div class="big grad">FR</div><h3 data-i18n="w2_t">les textes officiels</h3><p data-i18n="w2_p">Quand une traduction officielle existe, c'est elle qui s'affiche, avec les bons termes : Invocation Spéciale, Cimetière, Effet Rapide…</p></div>
-      <div class="glass reveal"><div class="big grad">1 s</div><h3 data-i18n="w3_t">pour lire une carte</h3><p data-i18n="w3_p">Pas besoin de quitter le jeu pour chercher sur Internet : la réponse apparaît à côté de la carte.</p></div>
+  <!-- ======================= LE JEU DMO ======================= -->
+  <section id="jeu">
+    <div class="dmo glass reveal">
+      <div class="txt">
+        <div class="kicker" data-i18n="game_k">Le jeu</div>
+        <h2 data-i18n="game_t">Yu-Gi-Oh! Duel Monsters Online</h2>
+        <p data-i18n="game_p"><b>Yu-Gi-Oh! DMO</b> est un <b>fangame multijoueur</b> : un jeu créé par des fans, où tu explores un monde en ligne, collectionnes des cartes, construis tes decks et affrontes d'autres joueurs en duel.</p>
+        <ul>
+          <li data-i18n="game_l1">Des duels en ligne contre d'autres joueurs</li>
+          <li data-i18n="game_l2">Une collection de cartes à agrandir au fil des parties</li>
+          <li data-i18n="game_l3">Des decks à construire et à améliorer</li>
+          <li data-i18n="game_l4">Mais des cartes et des effets en anglais : c'est là que Se7en intervient</li>
+        </ul>
+        <div class="disclaimer-sm" data-i18n="game_d">Se7en DMO Assistant est un outil indépendant, fait par un joueur : il n'est pas développé par l'équipe du jeu.</div>
+      </div>
+      <div class="duel" aria-hidden="true">
+        <div class="field">
+          <div class="slot back" style="left:25%;top:8%"></div><div class="slot m" style="left:43.5%;top:8%"></div><div class="slot back" style="left:62%;top:8%"></div>
+          <div class="slot m" style="left:25%;top:58%"></div><div class="slot s" style="left:43.5%;top:58%"></div><div class="slot t" style="left:62%;top:58%"></div>
+        </div>
+        <div class="vs">VS</div>
+        <div class="lp a glass strong">LP 8000</div><div class="lp b glass strong">LP 6200</div>
+      </div>
     </div>
   </section>
 
-  <!-- ======================= COMMENT ÇA MARCHE ======================= -->
+  <!-- ======================= POURQUOI ======================= -->
+  <section id="pourquoi">
+    <div class="sec-head reveal">
+      <div class="kicker" data-i18n="why_k">À quoi ça sert</div>
+      <h2 data-i18n="why_t">Joue sans buter sur l'anglais</h2>
+      <p data-i18n="why_p">Dans DMO, les cartes sont en anglais et leurs effets sont parfois longs et techniques. Se7en DMO Assistant les lit à ta place et te les explique en français, au moment où tu en as besoin.</p>
+    </div>
+    <div class="why">
+      <div class="glass reveal"><div class="big gold">15 000</div><h3 data-i18n="w1_t">cartes reconnues</h3><p data-i18n="w1_p">Par leur illustration, même quand le nom n'est pas affiché. L'appli apprend aussi les illustrations propres à DMO.</p></div>
+      <div class="glass reveal"><div class="big gold">FR</div><h3 data-i18n="w2_t">les textes officiels</h3><p data-i18n="w2_p">Quand une traduction officielle existe, c'est elle qui s'affiche, avec les bons termes : Invocation Spéciale, Cimetière, Effet Rapide…</p></div>
+      <div class="glass reveal"><div class="big gold">1 s</div><h3 data-i18n="w3_t">pour lire une carte</h3><p data-i18n="w3_p">Pas besoin de quitter le jeu pour chercher sur Internet : la réponse apparaît à côté de la carte.</p></div>
+    </div>
+  </section>
+
+  <!-- ======================= DÉMO ======================= -->
+  <section id="demo">
+    <div class="sec-head reveal">
+      <div class="kicker" data-i18n="demo_k">Démonstration</div>
+      <h2 data-i18n="demo_t">Tu vises. Tu comprends.</h2>
+    </div>
+    <div class="demo glass reveal">
+      <div class="ygo">
+        <div class="nm"><span>Se7en Guardian</span><span class="attr light">LIG</span></div>
+        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="art"><svg><use href="#art-guardian"/></svg></div>
+        <div class="meta-row">SE7-EN001</div>
+        <div class="box"><div class="tl">[Spellcaster / Effect]</div><div class="fx">Once per turn: You can target 1 monster your opponent controls; change its battle position.</div><div class="ad">ATK/2700 &nbsp;DEF/2100</div></div>
+        <div class="id">Se7en · example</div>
+      </div>
+      <div>
+        <div class="bubble glass strong">
+          <span class="tag">✦ <span data-i18n="demo_tag">Reconnue et traduite</span></span>
+          <h3>Gardien Se7en</h3>
+          <div class="type" data-i18n="demo_type">Monstre à Effet · LUMIÈRE · Niveau 7 · Magicien</div>
+          <p data-i18n="demo_fx">Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.</p>
+          <div class="stats"><span>ATK 2700</span><span>DEF 2100</span></div>
+        </div>
+        <div class="demo-cap"><kbd>F8</kbd> <span data-i18n="demo_cap">sur la carte en anglais → l'effet en français s'affiche sur le jeu</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= COMMENT ======================= -->
   <section id="comment">
     <div class="sec-head reveal">
       <div class="kicker" data-i18n="how_k">Comment ça marche</div>
-      <h2 data-i18n="how_t">Trois gestes. C'est tout.</h2>
+      <h2 data-i18n="how_t">Trois gestes, c'est tout</h2>
     </div>
     <div class="steps">
-      <div class="step glass reveal"><div class="n">1</div><h3 data-i18n="h1_t">Lance l'appli</h3><p data-i18n="h1_p">Ouvre DMO Assistant, puis ton jeu en plein écran fenêtré. Un court tutoriel te guide la première fois.</p></div>
-      <div class="step glass reveal"><div class="n">2</div><h3 data-i18n="h2_t">Vise une carte</h3><p data-i18n="h2_p">Pointe la carte avec ta souris et appuie sur <kbd>F8</kbd>. Ou active le mode auto avec <kbd>F10</kbd> : la traduction suit ta souris.</p></div>
-      <div class="step glass reveal"><div class="n">3</div><h3 data-i18n="h3_t">Lis en français</h3><p data-i18n="h3_p">L'effet apparaît sur le jeu, à côté de la carte. Les clics passent au travers, tu continues à jouer normalement.</p></div>
+      <div class="step glass reveal"><div class="n">I</div><h3 data-i18n="h1_t">Lance l'appli</h3><p data-i18n="h1_p">Ouvre Se7en DMO Assistant, puis DMO en plein écran fenêtré. Un court tutoriel te guide la première fois.</p></div>
+      <div class="step glass reveal"><div class="n">II</div><h3 data-i18n="h2_t">Vise une carte</h3><p data-i18n="h2_p">Pointe la carte avec ta souris et appuie sur <kbd>F8</kbd>. Ou active le mode auto avec <kbd>F10</kbd> : la traduction suit ta souris.</p></div>
+      <div class="step glass reveal"><div class="n">III</div><h3 data-i18n="h3_t">Lis en français</h3><p data-i18n="h3_p">L'effet apparaît sur le jeu, à côté de la carte. Les clics passent au travers, tu continues ton duel normalement.</p></div>
     </div>
   </section>
 
@@ -324,44 +494,40 @@
   <section id="fonctions">
     <div class="sec-head reveal">
       <div class="kicker" data-i18n="feat_k">Fonctions</div>
-      <h2 data-i18n="feat_t">Bien plus qu'un traducteur.</h2>
+      <h2 data-i18n="feat_t">Bien plus qu'un traducteur</h2>
       <p data-i18n="feat_p">Ta collection, tes decks, des conseils : tout ce qu'il faut pour progresser dans DMO.</p>
     </div>
     <div class="bento">
-      <div class="tile glass w4 reveal"><div class="ico i-violet"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div>
+      <div class="tile glass w4 reveal"><div class="ico i-x"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div>
         <h3 data-i18n="b1_t">Reconnaissance par l'illustration</h3><p data-i18n="b1_p">L'appli compare la carte à près de 15 000 illustrations. Elle redresse les cartes posées en perspective sur le terrain et lit l'ATK/DEF pour ne pas se tromper.</p>
         <div class="stat">14 800+<small data-i18n="b1_s">illustrations indexées</small></div></div>
-      <div class="tile glass w2 reveal"><div class="ico i-pink"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="2"/><rect x="12" y="8" width="6" height="5" rx="1"/></svg></div>
+      <div class="tile glass w2 reveal"><div class="ico i-t"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="2"/><rect x="12" y="8" width="6" height="5" rx="1"/></svg></div>
         <h3 data-i18n="b2_t">Overlay sur le jeu</h3><p data-i18n="b2_p">La traduction s'affiche par-dessus DMO, sans gêner tes clics. Invisible sur tes enregistrements, sauf si tu le veux.</p></div>
-      <div class="tile glass w2 reveal"><div class="ico i-gold"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+      <div class="tile glass w2 reveal"><div class="ico i-m"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
         <h3 data-i18n="b3_t">Ta collection en une capture</h3><p data-i18n="b3_p">Capture ton inventaire : toutes les cartes sont reconnues d'un coup, avec leur quantité.</p></div>
-      <div class="tile glass w4 reveal"><div class="ico i-blue"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.3L20 9l-4.2 3.9L17 19l-5-3-5 3 1.2-6.1L4 9l5.6-.7z"/></svg></div>
+      <div class="tile glass w4 reveal"><div class="ico i-g"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.3L20 9l-4.2 3.9L17 19l-5-3-5 3 1.2-6.1L4 9l5.6-.7z"/></svg></div>
         <h3 data-i18n="b4_t">Le deck parfait, expliqué</h3><p data-i18n="b4_p">Donne ton deck et ta collection : l'appli garde le cœur de ta stratégie, remplace les cartes faibles et t'explique chaque choix, avec tes chances d'ouvrir la bonne main.</p>
         <div class="stat">40<small data-i18n="b4_s">cartes, chacune justifiée</small></div></div>
-      <div class="tile glass w3 reveal"><div class="ico i-green"><svg viewBox="0 0 24 24"><path d="M5 8h14M5 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2M5 8v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M9 12h6"/></svg></div>
+      <div class="tile glass w3 reveal"><div class="ico i-s"><svg viewBox="0 0 24 24"><path d="M5 8h14M5 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2M5 8v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M9 12h6"/></svg></div>
         <h3 data-i18n="b5_t">Import depuis Internet</h3><p data-i18n="b5_p">Une capture d'un deck trouvé en ligne, ou une liste écrite : l'appli reconnaît les cartes et crée le deck pour toi.</p></div>
-      <div class="tile glass w3 reveal"><div class="ico i-dark"><svg viewBox="0 0 24 24"><path d="M5 5h6M8 5v2M6 7c0 3 2 5 5 6M10 7c0 2-1.5 4-4 5.5"/><path d="M13 20l4-10 4 10M14.5 16.5h5"/></svg></div>
+      <div class="tile glass w3 reveal"><div class="ico i-x"><svg viewBox="0 0 24 24"><path d="M5 5h6M8 5v2M6 7c0 3 2 5 5 6M10 7c0 2-1.5 4-4 5.5"/><path d="M13 20l4-10 4 10M14.5 16.5h5"/></svg></div>
         <h3 data-i18n="b6_t">Traduction hors ligne</h3><p data-i18n="b6_p">Les cartes sans texte français officiel sont traduites directement sur ton PC, sans rien envoyer sur Internet.</p></div>
     </div>
   </section>
 
   <!-- ======================= MISES À JOUR ======================= -->
   <section id="maj">
-    <div class="update glass lg reveal">
+    <div class="update glass reveal">
       <div>
         <div class="kicker" data-i18n="up_k">Toujours à jour</div>
         <h2 data-i18n="up_t">Télécharge une fois. Les nouveautés arrivent toutes seules.</h2>
         <p data-i18n="up_p">À chaque lancement, l'appli vérifie s'il existe une nouvelle version. Si oui, elle l'installe en quelques secondes et t'explique ce qui a changé. Tu n'as jamais besoin de la retélécharger.</p>
       </div>
       <div>
-        <div class="toast glass strong">
-          <div class="row"><div class="dot"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
-            <div><strong data-i18n="t1">Mise à jour installée</strong><small data-i18n="t1s">Redémarre pour en profiter</small></div></div>
-        </div>
-        <div class="toast glass strong">
-          <strong data-i18n="t2">Quoi de neuf ?</strong>
-          <ul><li data-i18n="t2a">Reconnaissance des cartes plus fiable en jeu</li><li data-i18n="t2b">Nouvel onglet Contact</li><li data-i18n="t2c">Animation d'ouverture Se7en</li></ul>
-        </div>
+        <div class="toast glass strong"><div class="row"><div class="dot"><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg></div>
+          <div><strong data-i18n="t1">Mise à jour installée</strong><small data-i18n="t1s">Redémarre pour en profiter</small></div></div></div>
+        <div class="toast glass strong"><strong data-i18n="t2">Quoi de neuf ?</strong>
+          <ul><li data-i18n="t2a">Reconnaissance des cartes plus fiable en jeu</li><li data-i18n="t2b">Nouvel onglet Contact</li><li data-i18n="t2c">Animation d'ouverture Se7en</li></ul></div>
       </div>
     </div>
   </section>
@@ -370,7 +536,7 @@
   <section id="touches">
     <div class="sec-head reveal">
       <div class="kicker" data-i18n="keys_k">Raccourcis</div>
-      <h2 data-i18n="keys_t">Tout se fait au clavier.</h2>
+      <h2 data-i18n="keys_t">Tout se fait au clavier</h2>
     </div>
     <div class="keys reveal">
       <div class="key glass"><kbd>F8</kbd><span data-i18n="k1">Traduire la carte visée</span></div>
@@ -384,10 +550,10 @@
 
   <!-- ======================= COMMUNAUTÉ ======================= -->
   <section>
-    <div class="community glass lg reveal">
+    <div class="community glass reveal">
       <span class="flag" aria-hidden="true"></span>
-      <h2 data-i18n="com_t">Par la communauté française, pour la communauté française.</h2>
-      <p data-i18n="com_p">DMO Assistant est fait <b>uniquement pour les joueurs francophones</b> de Yu-Gi-Oh! DMO. C'est un projet de fan, <b>gratuit et sans aucun but lucratif</b> : pas de vente, pas d'abonnement, pas de publicité, aucun don demandé.</p>
+      <h2 data-i18n="com_t">Par la communauté française, pour la communauté française</h2>
+      <p data-i18n="com_p">Se7en DMO Assistant est fait <b>uniquement pour les joueurs francophones</b> de Yu-Gi-Oh! DMO. C'est un projet de fan, <b>gratuit et sans aucun but lucratif</b> : pas de vente, pas d'abonnement, pas de publicité, aucun don demandé.</p>
       <div class="pills">
         <span class="pill glass strong" data-i18n="p1">100 % gratuit</span>
         <span class="pill glass strong" data-i18n="p2">Sans but lucratif</span>
@@ -401,11 +567,12 @@
   <section id="faq">
     <div class="sec-head reveal">
       <div class="kicker" data-i18n="faq_k">Questions</div>
-      <h2 data-i18n="faq_t">Questions fréquentes.</h2>
+      <h2 data-i18n="faq_t">Questions fréquentes</h2>
     </div>
     <div class="faq narrow">
+      <details class="glass reveal"><summary data-i18n="q0">C'est quoi Yu-Gi-Oh! DMO ?</summary><div class="ans" data-i18n="a0">Duel Monsters Online est un fangame multijoueur de Yu-Gi-Oh!, créé par des fans : on y collectionne des cartes, on construit des decks et on affronte d'autres joueurs en ligne. Se7en DMO Assistant est un outil à côté, qui t'aide à comprendre les cartes.</div></details>
       <details class="glass reveal"><summary data-i18n="q1">C'est vraiment gratuit ?</summary><div class="ans" data-i18n="a1">Oui, entièrement, et ça le restera. Le projet n'a aucun but lucratif : pas de version payante, pas de publicité, aucun don demandé.</div></details>
-      <details class="glass reveal"><summary data-i18n="q2">Est-ce que ça modifie le jeu ?</summary><div class="ans" data-i18n="a2">Non. L'appli ne touche ni aux fichiers ni à la mémoire du jeu : elle regarde seulement ce qui est affiché à l'écran, sur ton ordinateur, exactement comme si tu faisais une capture d'écran.</div></details>
+      <details class="glass reveal"><summary data-i18n="q2">Est-ce que ça modifie le jeu ?</summary><div class="ans" data-i18n="a2">Non. L'appli ne touche ni aux fichiers ni à la mémoire du jeu : elle regarde seulement ce qui est affiché à l'écran, sur ton ordinateur, exactement comme une capture d'écran.</div></details>
       <details class="glass reveal"><summary data-i18n="q3">Pourquoi Windows dit « Windows a protégé votre ordinateur » ?</summary><div class="ans" data-i18n="a3">Parce que l'appli n'est pas signée avec un certificat payant. Clique sur « Informations complémentaires » puis « Exécuter quand même ». Le message ne s'affiche qu'au premier lancement.</div></details>
       <details class="glass reveal"><summary data-i18n="q4">Une carte est mal reconnue, je fais quoi ?</summary><div class="ans" data-i18n="a4">Vise-la et appuie sur <kbd>Maj+F8</kbd> : l'appli te propose les cartes possibles (d'après l'ATK/DEF lue), tu choisis la bonne et elle s'en souviendra. Tu peux aussi m'envoyer une capture sur Discord.</div></details>
       <details class="glass reveal"><summary data-i18n="q5">Ça marche sur Mac ou sur téléphone ?</summary><div class="ans" data-i18n="a5">Pour l'instant, uniquement sur PC Windows 10 et 11.</div></details>
@@ -415,13 +582,11 @@
 
   <!-- ======================= TÉLÉCHARGER + CONTACT ======================= -->
   <section id="telecharger">
-    <div class="download glass lg reveal">
-      <h2 data-i18n="dl_t">Prêt pour le duel ?</h2>
+    <div class="download glass reveal">
+      <h2 data-i18n="dl_t">C'est l'heure du duel !</h2>
       <p data-i18n="dl_p">Télécharge le fichier, décompresse-le et lance « DMO Assistant.exe ». Rien d'autre à installer.</p>
       <div class="actions">
-        <a class="btn btn-dark" href="https://github.com/se7enclaude/dmo-assistant/releases/latest">
-          <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="cta">Télécharger gratuitement</span>
-        </a>
+        <a class="btn btn-gold" href="https://github.com/se7enclaude/dmo-assistant/releases/latest"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="cta">Télécharger gratuitement</span></a>
       </div>
       <div class="meta"><span data-i18n="dl_m">Windows 10 / 11 · environ 180 Mo · mises à jour automatiques</span></div>
     </div>
@@ -439,7 +604,7 @@
         <button class="copy" data-copy="se7en.world" data-i18n="copy">Copier</button>
       </div>
       <div class="ccard glass reveal">
-        <div class="ico i-gold"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M12 8l1.5 3 3 .4-2.2 2 .6 3-2.9-1.5-2.9 1.5.6-3-2.2-2 3-.4z"/></svg></div>
+        <div class="ico i-g"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M12 8l1.5 3 3 .4-2.2 2 .6 3-2.9-1.5-2.9 1.5.6-3-2.2-2 3-.4z"/></svg></div>
         <div><small data-i18n="ingame">Pseudo dans DMO</small><strong>Yami Seko</strong></div>
         <button class="copy" data-copy="Yami Seko" data-i18n="copy">Copier</button>
       </div>
@@ -450,36 +615,42 @@
 <footer>
   <div class="wrap">
     <ul>
-      <li data-i18n="l1"><b>Projet non lucratif</b> : DMO Assistant est distribué gratuitement, sans publicité ni contrepartie, uniquement pour la communauté française. Il ne doit pas être revendu.</li>
-      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni aux créateurs de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh! et les noms et illustrations de cartes appartiennent à leurs ayants droit. La carte « Gardien Se7en » montrée plus haut est un exemple inventé.</li>
+      <li data-i18n="l1"><b>Projet non lucratif</b> : Se7en DMO Assistant est distribué gratuitement, sans publicité ni contrepartie, uniquement pour la communauté française. Il ne doit pas être revendu.</li>
+      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh! et les noms et illustrations de cartes officielles appartiennent à leurs ayants droit. Les cartes montrées sur ce site (« Gardien Se7en », « Sceau Millénaire », « Labyrinthe d'Ombre ») sont des exemples inventés, avec des illustrations originales.</li>
       <li data-i18n="l3">Données de cartes : <a href="https://ygoprodeck.com/api-guide/" rel="noopener">YGOPRODeck</a>. Polices Cinzel et Poppins sous licence SIL Open Font License.</li>
       <li data-i18n="l4">L'application ne modifie pas le jeu et n'envoie aucune donnée personnelle.</li>
     </ul>
-    <div class="bottom"><span><span class="brand" style="font-size:14px">SE<span>7</span>EN</span> · <span data-i18n="footer">fait par un joueur, pour les joueurs</span></span><span>Discord : se7en.world</span></div>
+    <div class="bottom"><span><span class="brand" style="font-size:14px">SE<span>7</span>EN</span> · <span data-i18n="footer">fait par un joueur, pour les joueurs</span></span><span>Discord : se7en.world · DMO : Yami Seko</span></div>
   </div>
 </footer>
 
 <script>
   // Textes anglais ; le français est le contenu d'origine de la page.
   const EN = {
-    nav_why: "What it's for", nav_features: "Features", nav_faq: "FAQ", nav_contact: "Contact", nav_dl: "Download",
+    nav_game: "The game", nav_why: "What it's for", nav_features: "Features", nav_faq: "FAQ", nav_contact: "Contact", nav_dl: "Download",
     eyebrow: "For Yu-Gi-Oh! Duel Monsters Online",
-    headline: "Every card. <span class=\"grad\">In French.</span> Instantly.",
-    lead: "Point at a card in the game and press a key: its effect appears in French, right on top of DMO.",
-    cta: "Download for free", cta2: "See how it works", meta: "Windows 10 and 11 · Free · Version",
-    demo_tag: "Recognized · translated", demo_type: "Effect Monster · LIGHT · Level 6",
-    demo_text: "Once per turn: you can target 1 monster your opponent controls; change its battle position. If this card is sent to the GY, draw 1 card. (shown in French in the app)",
-    demo_hint: "on the targeted card",
-    why_k: "What it's for", why_t: "Play without getting stuck on English.",
-    why_p: "In DMO, cards are in English and their effects can be long and technical. DMO Assistant reads them for you and explains them in French, right when you need it.",
+    headline: "Every card, <span class=\"gold\">in French</span>, mid-duel.",
+    lead: "Point at a card in DMO and press a key: its effect appears in French, right on top of the game. Free, for the whole community.",
+    cta: "Download for free", cta2: "See the demo", meta: "Windows 10 and 11 · Free · Non-profit · Version",
+    game_k: "The game", game_t: "Yu-Gi-Oh! Duel Monsters Online",
+    game_p: "<b>Yu-Gi-Oh! DMO</b> is a <b>multiplayer fangame</b>: a game made by fans, where you explore an online world, collect cards, build your decks and duel other players.",
+    game_l1: "Online duels against other players", game_l2: "A card collection that grows as you play", game_l3: "Decks to build and improve",
+    game_l4: "But cards and effects are in English: that's where Se7en comes in",
+    game_d: "Se7en DMO Assistant is an independent tool made by a player: it is not developed by the game's team.",
+    why_k: "What it's for", why_t: "Play without getting stuck on English",
+    why_p: "In DMO, cards are in English and their effects can be long and technical. Se7en DMO Assistant reads them for you and explains them in French, right when you need it.",
     w1_t: "cards recognized", w1_p: "By their artwork, even when no name is shown. The app also learns DMO's own artworks.",
     w2_t: "official texts", w2_p: "When an official French translation exists, that's what you see, with the right game terms.",
     w3_t: "to read a card", w3_p: "No need to leave the game to search online: the answer appears next to the card.",
-    how_k: "How it works", how_t: "Three steps. That's it.",
-    h1_t: "Launch the app", h1_p: "Open DMO Assistant, then your game in windowed fullscreen. A short tutorial guides you the first time.",
+    demo_k: "Demo", demo_t: "You aim. You understand.", demo_tag: "Recognized and translated",
+    demo_type: "Effect Monster · LIGHT · Level 7 · Spellcaster (shown in French in the app)",
+    demo_fx: "Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.",
+    demo_cap: "on the English card → the French effect appears over the game",
+    how_k: "How it works", how_t: "Three steps, that's it",
+    h1_t: "Launch the app", h1_p: "Open Se7en DMO Assistant, then DMO in windowed fullscreen. A short tutorial guides you the first time.",
     h2_t: "Aim at a card", h2_p: "Point at the card with your mouse and press <kbd>F8</kbd>. Or turn on auto mode with <kbd>F10</kbd>: the translation follows your mouse.",
-    h3_t: "Read it in French", h3_p: "The effect appears over the game, next to the card. Clicks go through, so you keep playing normally.",
-    feat_k: "Features", feat_t: "Much more than a translator.", feat_p: "Your collection, your decks, advice: everything you need to get better at DMO.",
+    h3_t: "Read it in French", h3_p: "The effect appears over the game, next to the card. Clicks go through, so you keep dueling normally.",
+    feat_k: "Features", feat_t: "Much more than a translator", feat_p: "Your collection, your decks, advice: everything you need to get better at DMO.",
     b1_t: "Recognition by artwork", b1_p: "The app compares the card with about 15,000 artworks. It straightens cards lying in perspective on the field and reads ATK/DEF to avoid mistakes.", b1_s: "indexed artworks",
     b2_t: "In-game overlay", b2_p: "The translation shows on top of DMO without blocking your clicks. Invisible on your recordings, unless you want it.",
     b3_t: "Your collection in one screenshot", b3_p: "Capture your inventory: every card is recognized at once, with its quantity.",
@@ -489,29 +660,30 @@
     up_k: "Always up to date", up_t: "Download once. New features arrive on their own.",
     up_p: "Every time it starts, the app checks for a new version. If there is one, it installs it in seconds and tells you what changed. You never need to download it again.",
     t1: "Update installed", t1s: "Restart to enjoy it", t2: "What's new?", t2a: "More reliable in-game card recognition", t2b: "New Contact tab", t2c: "Se7en opening animation",
-    keys_k: "Shortcuts", keys_t: "Everything from the keyboard.",
+    keys_k: "Shortcuts", keys_t: "Everything from the keyboard",
     k1: "Translate the targeted card", k2: "Auto mode: follows your mouse", k3: "Teach an unknown card", k4: "Scan your collection", k5: "Show / hide the overlay", k6: "Show / hide the app",
-    com_t: "By the French community, for the French community.",
-    com_p: "DMO Assistant is made <b>only for French-speaking players</b> of Yu-Gi-Oh! DMO (its translations are in French). It is a fan project, <b>free and strictly non-profit</b>: no sales, no subscription, no ads, no donations asked.",
+    com_t: "By the French community, for the French community",
+    com_p: "Se7en DMO Assistant is made <b>only for French-speaking players</b> of Yu-Gi-Oh! DMO (its translations are in French). It is a fan project, <b>free and strictly non-profit</b>: no sales, no subscription, no ads, no donations asked.",
     p1: "100% free", p2: "Non-profit", p3: "No ads", p4: "Doesn't modify the game",
-    faq_k: "Questions", faq_t: "Frequently asked questions.",
+    faq_k: "Questions", faq_t: "Frequently asked questions",
+    q0: "What is Yu-Gi-Oh! DMO?", a0: "Duel Monsters Online is a multiplayer Yu-Gi-Oh! fangame made by fans: you collect cards, build decks and duel other players online. Se7en DMO Assistant is a separate tool that helps you understand the cards.",
     q1: "Is it really free?", a1: "Yes, completely, and it will stay that way. The project is non-profit: no paid version, no ads, no donations asked.",
-    q2: "Does it modify the game?", a2: "No. The app never touches the game's files or memory: it only looks at what is shown on your screen, on your computer, just like taking a screenshot.",
+    q2: "Does it modify the game?", a2: "No. The app never touches the game's files or memory: it only looks at what is shown on your screen, on your computer, just like a screenshot.",
     q3: "Why does Windows say “Windows protected your PC”?", a3: "Because the app isn't signed with a paid certificate. Click “More info”, then “Run anyway”. The message only shows on first launch.",
     q4: "A card is recognized wrong, what do I do?", a4: "Aim at it and press <kbd>Shift+F8</kbd>: the app suggests possible cards (based on the ATK/DEF it reads), you pick the right one and it will remember. You can also send me a screenshot on Discord.",
     q5: "Does it work on Mac or phone?", a5: "For now, only on Windows 10 and 11 PCs.",
     q6: "Shortcuts don't work in game.", a6: "Right-click DMO Assistant.exe, then “Run as administrator”. Also check that the game is in windowed fullscreen.",
-    dl_t: "Ready to duel?", dl_p: "Download the file, unzip it and run “DMO Assistant.exe”. Nothing else to install.",
+    dl_t: "It's time to duel!", dl_p: "Download the file, unzip it and run “DMO Assistant.exe”. Nothing else to install.",
     dl_m: "Windows 10 / 11 · about 180 MB · automatic updates",
     ct_k: "Contact", ct_t: "An idea? A bug? A duel?", copy: "Copy", ingame: "In-game name in DMO",
-    l1: "<b>Non-profit project</b>: DMO Assistant is distributed for free, with no ads and nothing in return, only for the French-speaking community. It must not be resold.",
-    l2: "Fan project, <b>not affiliated</b> with Konami or the creators of Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh! and card names and artworks belong to their respective owners. The “Gardien Se7en” card shown above is a made-up example.",
+    l1: "<b>Non-profit project</b>: Se7en DMO Assistant is distributed for free, with no ads and nothing in return, only for the French-speaking community. It must not be resold.",
+    l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh! and official card names and artworks belong to their respective owners. The cards shown on this site (“Gardien Se7en”, “Sceau Millénaire”, “Labyrinthe d'Ombre”) are made-up examples with original artwork.",
     l3: "Card data: <a href=\"https://ygoprodeck.com/api-guide/\" rel=\"noopener\">YGOPRODeck</a>. Cinzel and Poppins fonts under the SIL Open Font License.",
     l4: "The app does not modify the game and sends no personal data.",
     footer: "made by a player, for players",
   };
   const META = { fr: document.querySelector('meta[name="description"]').content,
-                 en: "Free, non-profit tool for the French-speaking Yu-Gi-Oh! Duel Monsters Online community: card recognition and effects in French." };
+                 en: "Free, non-profit tool for the French-speaking community of Yu-Gi-Oh! Duel Monsters Online, a multiplayer fangame: card recognition and effects in French." };
   const FR = {};
   document.querySelectorAll("[data-i18n]").forEach((el) => { if (!(el.dataset.i18n in FR)) FR[el.dataset.i18n] = el.innerHTML; });
   let lang = "fr";
