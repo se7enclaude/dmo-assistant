@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Se7en DMO Assistant</title>
-<meta name="description" content="Outil gratuit et non lucratif pour la communauté française de Yu-Gi-Oh! Duel Monsters Online, un fangame multijoueur : reconnaissance des cartes et effets en français.">
+<meta name="description" content="Outil gratuit et non lucratif pour la communauté française de Yu-Gi-Oh! Duel Monsters Online, un fangame multijoueur en développement : reconnaissance des cartes et effets en français.">
 <meta name="theme-color" content="#0c0718">
 <style>
   @font-face { font-family: "Cinzel"; src: url("fonts/Cinzel.ttf") format("truetype"); font-weight: 400 900; font-display: swap; }
@@ -90,7 +90,11 @@
   .hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 30px; align-items: center; padding: 70px 0 30px; }
   .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi);
     padding: 7px 14px; border-radius: 999px; }
-  .logo { margin: 18px 0 0; font: 900 clamp(58px, 9vw, 112px)/1 "Cinzel Decorative", Georgia, serif; letter-spacing: 3px;
+  .ygo-logo { display: block; width: min(440px, 100%); height: auto; margin: 6px 0 0 -8px;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .55)) drop-shadow(0 0 30px rgba(255, 60, 60, .25)); }
+  .se7en-line { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+  .se7en-line .sub { margin: 0; }
+  .logo { margin: 0; font: 900 clamp(46px, 6.4vw, 78px)/1 "Cinzel Decorative", Georgia, serif; letter-spacing: 3px;
     background: linear-gradient(180deg, #fff8dc 0%, #f7d06a 38%, #c4831f 62%, #8a5410 78%, #ffe6a3 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
     filter: drop-shadow(0 3px 0 #3d2204) drop-shadow(0 0 26px rgba(245, 196, 81, .45)); }
   .logo span { background: linear-gradient(180deg, #ffd9f0, #ff5fb4 45%, #a3125f 80%, #ffb3dd); -webkit-background-clip: text; background-clip: text; }
@@ -125,6 +129,9 @@
     background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .35) 45%, rgba(255, 220, 255, .15) 50%, transparent 62%); background-size: 260% 100%;
     animation: foil 6s ease-in-out infinite; mix-blend-mode: soft-light; }
   @keyframes foil { 0%, 30% { background-position: 120% 0; } 70%, 100% { background-position: -40% 0; } }
+  .ygo.normal { --frame: linear-gradient(160deg, #ecd383, #cfa94e 55%, #9f7b2b); }
+  .ygo .art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ygo .fx.flavor { font-style: italic; }
   .ygo.spell { --frame: linear-gradient(160deg, #3fb9a0, #1d8a77 55%, #136357); }
   .ygo.trap { --frame: linear-gradient(160deg, #d0609f, #a83d7c 55%, #7c2a5c); }
   .ygo .nm { display: flex; align-items: center; justify-content: space-between; gap: 4%; height: 8.6cqw; padding: 0 2.2%;
@@ -164,7 +171,12 @@
   /* le jeu DMO */
   .dmo { display: grid; grid-template-columns: 1fr 1fr; gap: 0; overflow: hidden; }
   .dmo .txt { padding: 44px; }
-  .dmo .txt h2 { margin: 12px 0 0; font: 700 clamp(28px, 4vw, 42px)/1.12 "Cinzel", serif; }
+  .dmo .txt h2 { margin: 12px 0 0; font: 700 clamp(20px, 2.6vw, 28px)/1.15 "Cinzel", serif; letter-spacing: .14em; color: #f3e6c4; }
+  .dmo .game-logo { display: block; width: min(330px, 100%); height: auto; margin-top: 14px; filter: drop-shadow(0 8px 22px rgba(0, 0, 0, .5)); }
+  .dmo .dev { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font: 600 12.5px/1 var(--font); color: #ffe7a3; padding: 7px 12px; border-radius: 999px;
+    background: rgba(245, 196, 81, .14); box-shadow: inset 0 0 0 1px rgba(245, 196, 81, .4); }
+  .dmo .dev::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3dd68c; box-shadow: 0 0 10px #3dd68c; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
   .dmo .txt p { color: var(--text-2); }
   .dmo ul { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
   .dmo li { display: flex; gap: 12px; align-items: flex-start; color: var(--text-2); }
@@ -290,6 +302,7 @@
   @media (max-width: 920px) {
     .hero { grid-template-columns: 1fr; text-align: center; padding-top: 50px; }
     .hero .lead { margin-inline: auto; } .hero .actions { justify-content: center; }
+    .ygo-logo { margin-inline: auto; } .se7en-line { justify-content: center; }
     .fan { height: 440px; } .fan .ygo { width: 210px; }
     .dmo, .update { grid-template-columns: 1fr; }
     .bento { grid-template-columns: 1fr 1fr; } .tile.w4, .tile.w3, .tile.w2 { grid-column: span 2; }
@@ -368,9 +381,8 @@
   <!-- ======================= EN-TÊTE ======================= -->
   <header class="hero">
     <div>
-      <span class="eyebrow glass" data-i18n="eyebrow">Pour Yu-Gi-Oh! Duel Monsters Online</span>
-      <h1 class="logo">SE<span>7</span>EN</h1>
-      <p class="sub">DMO ASSISTANT</p>
+      <img class="ygo-logo" src="img/yugioh-logo.webp" width="900" height="315" alt="Yu-Gi-Oh!">
+      <div class="se7en-line"><h1 class="logo">SE<span>7</span>EN</h1><p class="sub">DMO ASSISTANT</p></div>
       <p class="headline" data-i18n="headline">Chaque carte, <span class="gold">en français</span>, en plein duel.</p>
       <p class="lead" data-i18n="lead">Pointe une carte dans DMO, appuie sur une touche : son effet s'affiche en français, directement par-dessus le jeu. Gratuit, pour toute la communauté.</p>
       <div class="actions">
@@ -382,21 +394,19 @@
 
     <div class="fan" aria-hidden="true">
       <div class="halo"></div><div class="ring"></div>
-      <div class="ygo spell c1">
-        <div class="nm"><span>Sceau Millénaire</span><span class="attr spell">MAG</span></div>
-        <div class="lv txt">[Carte Magie ✦]</div>
-        <div class="art"><svg><use href="#art-seal"/></svg></div>
-        <div class="meta-row">SE7-FR002</div>
-        <div class="box"><div class="fx">Ajoutez 1 monstre « Se7en » depuis votre Deck à votre main. Vous ne pouvez activer qu'1 « Sceau Millénaire » par tour.</div></div>
-        <div class="id">Se7en · exemple</div>
-      </div>
-      <div class="ygo c2">
-        <div class="nm"><span>Gardien Se7en</span><span class="attr light">LUM</span></div>
+      <div class="ygo normal c1">
+        <div class="nm"><span>Magicien Sombre</span><span class="attr dark">TÉN</span></div>
         <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="art"><svg><use href="#art-guardian"/></svg></div>
-        <div class="meta-row">SE7-FR001</div>
-        <div class="box"><div class="tl">[Magicien / Effet]</div><div class="fx">Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.</div><div class="ad">ATK/2700 &nbsp;DEF/2100</div></div>
-        <div class="id">Se7en · exemple</div>
+        <div class="art"><img src="img/magicien-sombre.webp" width="560" height="560" alt=""></div>
+        <div class="meta-row">LOB-FR005</div>
+        <div class="box"><div class="tl">[Magicien]</div><div class="fx flavor">Le magicien ultime en matière d'attaque et de défense.</div><div class="ad">ATK/2500 &nbsp;DEF/2100</div></div>
+      </div>
+      <div class="ygo normal c2">
+        <div class="nm" style="font-size:5.1cqw"><span>Dragon Blanc aux Yeux Bleus</span><span class="attr light">LUM</span></div>
+        <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="art"><img src="img/dragon-blanc.webp" width="560" height="560" alt=""></div>
+        <div class="meta-row">LOB-FR001</div>
+        <div class="box"><div class="tl">[Dragon]</div><div class="fx flavor">Ce dragon légendaire est une puissante machine de destruction.</div><div class="ad">ATK/3000 &nbsp;DEF/2500</div></div>
       </div>
       <div class="ygo trap c3">
         <div class="nm"><span>Labyrinthe d'Ombre</span><span class="attr trap">PIÈ</span></div>
@@ -414,10 +424,12 @@
     <div class="dmo glass reveal">
       <div class="txt">
         <div class="kicker" data-i18n="game_k">Le jeu</div>
-        <h2 data-i18n="game_t">Yu-Gi-Oh! Duel Monsters Online</h2>
-        <p data-i18n="game_p"><b>Yu-Gi-Oh! DMO</b> est un <b>fangame multijoueur</b> : un jeu créé par des fans, où tu explores un monde en ligne, collectionnes des cartes, construis tes decks et affrontes d'autres joueurs en duel.</p>
+        <img class="game-logo" src="img/yugioh-logo.webp" width="900" height="315" alt="Yu-Gi-Oh!" loading="lazy">
+        <h2>DUEL MONSTERS ONLINE</h2>
+        <span class="dev" data-i18n="game_dev">Actuellement en développement</span>
+        <p data-i18n="game_p"><b>Yu-Gi-Oh! DMO</b> est un <b>fangame multijoueur</b> créé par des fans, actuellement en développement, qui permet de faire des <b>duels en ligne beaucoup plus réalistes</b>.</p>
         <ul>
-          <li data-i18n="game_l1">Des duels en ligne contre d'autres joueurs</li>
+          <li data-i18n="game_l1">Des duels en ligne beaucoup plus réalistes</li>
           <li data-i18n="game_l2">Une collection de cartes à agrandir au fil des parties</li>
           <li data-i18n="game_l3">Des decks à construire et à améliorer</li>
           <li data-i18n="game_l4">Mais des cartes et des effets en anglais : c'est là que Se7en intervient</li>
@@ -456,21 +468,20 @@
       <h2 data-i18n="demo_t">Tu vises. Tu comprends.</h2>
     </div>
     <div class="demo glass reveal">
-      <div class="ygo">
-        <div class="nm"><span>Se7en Guardian</span><span class="attr light">LIG</span></div>
+      <div class="ygo normal">
+        <div class="nm"><span>Dark Magician</span><span class="attr dark">DRK</span></div>
         <div class="lv"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="art"><svg><use href="#art-guardian"/></svg></div>
-        <div class="meta-row">SE7-EN001</div>
-        <div class="box"><div class="tl">[Spellcaster / Effect]</div><div class="fx">Once per turn: You can target 1 monster your opponent controls; change its battle position.</div><div class="ad">ATK/2700 &nbsp;DEF/2100</div></div>
-        <div class="id">Se7en · example</div>
+        <div class="art"><img src="img/magicien-sombre.webp" width="560" height="560" alt="" loading="lazy"></div>
+        <div class="meta-row">LOB-EN005</div>
+        <div class="box"><div class="tl">[Spellcaster]</div><div class="fx flavor">The ultimate wizard in terms of attack and defense.</div><div class="ad">ATK/2500 &nbsp;DEF/2100</div></div>
       </div>
       <div>
         <div class="bubble glass strong">
           <span class="tag">✦ <span data-i18n="demo_tag">Reconnue et traduite</span></span>
-          <h3>Gardien Se7en</h3>
-          <div class="type" data-i18n="demo_type">Monstre à Effet · LUMIÈRE · Niveau 7 · Magicien</div>
-          <p data-i18n="demo_fx">Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.</p>
-          <div class="stats"><span>ATK 2700</span><span>DEF 2100</span></div>
+          <h3>Magicien Sombre</h3>
+          <div class="type" data-i18n="demo_type">Monstre Normal · TÉNÈBRES · Niveau 7 · Magicien</div>
+          <p data-i18n="demo_fx">Le magicien ultime en matière d'attaque et de défense.</p>
+          <div class="stats"><span>ATK 2500</span><span>DEF 2100</span></div>
         </div>
         <div class="demo-cap"><kbd>F8</kbd> <span data-i18n="demo_cap">sur la carte en anglais → l'effet en français s'affiche sur le jeu</span></div>
       </div>
@@ -570,7 +581,7 @@
       <h2 data-i18n="faq_t">Questions fréquentes</h2>
     </div>
     <div class="faq narrow">
-      <details class="glass reveal"><summary data-i18n="q0">C'est quoi Yu-Gi-Oh! DMO ?</summary><div class="ans" data-i18n="a0">Duel Monsters Online est un fangame multijoueur de Yu-Gi-Oh!, créé par des fans : on y collectionne des cartes, on construit des decks et on affronte d'autres joueurs en ligne. Se7en DMO Assistant est un outil à côté, qui t'aide à comprendre les cartes.</div></details>
+      <details class="glass reveal"><summary data-i18n="q0">C'est quoi Yu-Gi-Oh! DMO ?</summary><div class="ans" data-i18n="a0">Duel Monsters Online est un fangame multijoueur de Yu-Gi-Oh!, créé par des fans et actuellement en développement. Il permet de faire des duels en ligne beaucoup plus réalistes, d'agrandir sa collection de cartes et de construire ses decks. Se7en DMO Assistant est un outil à côté, qui t'aide à comprendre les cartes.</div></details>
       <details class="glass reveal"><summary data-i18n="q1">C'est vraiment gratuit ?</summary><div class="ans" data-i18n="a1">Oui, entièrement, et ça le restera. Le projet n'a aucun but lucratif : pas de version payante, pas de publicité, aucun don demandé.</div></details>
       <details class="glass reveal"><summary data-i18n="q2">Est-ce que ça modifie le jeu ?</summary><div class="ans" data-i18n="a2">Non. L'appli ne touche ni aux fichiers ni à la mémoire du jeu : elle regarde seulement ce qui est affiché à l'écran, sur ton ordinateur, exactement comme une capture d'écran.</div></details>
       <details class="glass reveal"><summary data-i18n="q3">Pourquoi Windows dit « Windows a protégé votre ordinateur » ?</summary><div class="ans" data-i18n="a3">Parce que l'appli n'est pas signée avec un certificat payant. Clique sur « Informations complémentaires » puis « Exécuter quand même ». Le message ne s'affiche qu'au premier lancement.</div></details>
@@ -616,7 +627,7 @@
   <div class="wrap">
     <ul>
       <li data-i18n="l1"><b>Projet non lucratif</b> : Se7en DMO Assistant est distribué gratuitement, sans publicité ni contrepartie, uniquement pour la communauté française. Il ne doit pas être revendu.</li>
-      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh! et les noms et illustrations de cartes officielles appartiennent à leurs ayants droit. Les cartes montrées sur ce site (« Gardien Se7en », « Sceau Millénaire », « Labyrinthe d'Ombre ») sont des exemples inventés, avec des illustrations originales.</li>
+      <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh!, son logo, les noms et les illustrations des cartes (dont Magicien Sombre et Dragon Blanc aux Yeux Bleus) appartiennent à Konami et à leurs ayants droit ; ils sont montrés ici uniquement à titre d'illustration, sans aucun but commercial. La carte « Labyrinthe d'Ombre » est un exemple inventé.</li>
       <li data-i18n="l3">Données de cartes : <a href="https://ygoprodeck.com/api-guide/" rel="noopener">YGOPRODeck</a>. Polices Cinzel et Poppins sous licence SIL Open Font License.</li>
       <li data-i18n="l4">L'application ne modifie pas le jeu et n'envoie aucune donnée personnelle.</li>
     </ul>
@@ -633,8 +644,9 @@
     lead: "Point at a card in DMO and press a key: its effect appears in French, right on top of the game. Free, for the whole community.",
     cta: "Download for free", cta2: "See the demo", meta: "Windows 10 and 11 · Free · Non-profit · Version",
     game_k: "The game", game_t: "Yu-Gi-Oh! Duel Monsters Online",
-    game_p: "<b>Yu-Gi-Oh! DMO</b> is a <b>multiplayer fangame</b>: a game made by fans, where you explore an online world, collect cards, build your decks and duel other players.",
-    game_l1: "Online duels against other players", game_l2: "A card collection that grows as you play", game_l3: "Decks to build and improve",
+    game_dev: "Currently in development",
+    game_p: "<b>Yu-Gi-Oh! DMO</b> is a <b>multiplayer fangame</b> made by fans, currently in development, that lets you play <b>much more realistic online duels</b>.",
+    game_l1: "Much more realistic online duels", game_l2: "A card collection that grows as you play", game_l3: "Decks to build and improve",
     game_l4: "But cards and effects are in English: that's where Se7en comes in",
     game_d: "Se7en DMO Assistant is an independent tool made by a player: it is not developed by the game's team.",
     why_k: "What it's for", why_t: "Play without getting stuck on English",
@@ -643,8 +655,8 @@
     w2_t: "official texts", w2_p: "When an official French translation exists, that's what you see, with the right game terms.",
     w3_t: "to read a card", w3_p: "No need to leave the game to search online: the answer appears next to the card.",
     demo_k: "Demo", demo_t: "You aim. You understand.", demo_tag: "Recognized and translated",
-    demo_type: "Effect Monster · LIGHT · Level 7 · Spellcaster (shown in French in the app)",
-    demo_fx: "Une fois par tour : vous pouvez cibler 1 monstre contrôlé par votre adversaire ; changez sa position de combat.",
+    demo_type: "Normal Monster · DARK · Level 7 · Spellcaster (shown in French in the app)",
+    demo_fx: "Le magicien ultime en matière d'attaque et de défense.",
     demo_cap: "on the English card → the French effect appears over the game",
     how_k: "How it works", how_t: "Three steps, that's it",
     h1_t: "Launch the app", h1_p: "Open Se7en DMO Assistant, then DMO in windowed fullscreen. A short tutorial guides you the first time.",
@@ -666,7 +678,7 @@
     com_p: "Se7en DMO Assistant is made <b>only for French-speaking players</b> of Yu-Gi-Oh! DMO (its translations are in French). It is a fan project, <b>free and strictly non-profit</b>: no sales, no subscription, no ads, no donations asked.",
     p1: "100% free", p2: "Non-profit", p3: "No ads", p4: "Doesn't modify the game",
     faq_k: "Questions", faq_t: "Frequently asked questions",
-    q0: "What is Yu-Gi-Oh! DMO?", a0: "Duel Monsters Online is a multiplayer Yu-Gi-Oh! fangame made by fans: you collect cards, build decks and duel other players online. Se7en DMO Assistant is a separate tool that helps you understand the cards.",
+    q0: "What is Yu-Gi-Oh! DMO?", a0: "Duel Monsters Online is a multiplayer Yu-Gi-Oh! fangame made by fans, currently in development. It offers much more realistic online duels, a card collection to grow and decks to build. Se7en DMO Assistant is a separate tool that helps you understand the cards.",
     q1: "Is it really free?", a1: "Yes, completely, and it will stay that way. The project is non-profit: no paid version, no ads, no donations asked.",
     q2: "Does it modify the game?", a2: "No. The app never touches the game's files or memory: it only looks at what is shown on your screen, on your computer, just like a screenshot.",
     q3: "Why does Windows say “Windows protected your PC”?", a3: "Because the app isn't signed with a paid certificate. Click “More info”, then “Run anyway”. The message only shows on first launch.",
@@ -677,7 +689,7 @@
     dl_m: "Windows 10 / 11 · about 180 MB · automatic updates",
     ct_k: "Contact", ct_t: "An idea? A bug? A duel?", copy: "Copy", ingame: "In-game name in DMO",
     l1: "<b>Non-profit project</b>: Se7en DMO Assistant is distributed for free, with no ads and nothing in return, only for the French-speaking community. It must not be resold.",
-    l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh! and official card names and artworks belong to their respective owners. The cards shown on this site (“Gardien Se7en”, “Sceau Millénaire”, “Labyrinthe d'Ombre”) are made-up examples with original artwork.",
+    l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh!, its logo, and card names and artworks (including Dark Magician and Blue-Eyes White Dragon) belong to Konami and their respective owners; they are shown here for illustration only, with no commercial purpose. The “Labyrinthe d'Ombre” card is a made-up example.",
     l3: "Card data: <a href=\"https://ygoprodeck.com/api-guide/\" rel=\"noopener\">YGOPRODeck</a>. Cinzel and Poppins fonts under the SIL Open Font License.",
     l4: "The app does not modify the game and sends no personal data.",
     footer: "made by a player, for players",
