@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0",
+  "date": "2026-10-27",
+  "history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-27",
+      "notes": [
+        "Animation d'ouverture Se7en (désactivable dans l'onglet Aide).",
+        "Onglet Contact : Discord se7en.world et pseudo en jeu Yami Seko.",
+        "Mises à jour automatiques : l'application se met à jour toute seule et affiche les nouveautés.",
+        "Reconnaissance des cartes plus fiable en jeu (plus de fausses cartes sur le décor).",
+        "Écran « Voir / corriger les illustrations apprises ».",
+        "Collection : plusieurs cartes reconnues d'un coup depuis une capture d'inventaire, avec les quantités.",
+        "Deck parfait : fusionne ton deck et ta collection et explique chaque choix."
+      ]
+    }
+  ],
+  "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
+  "sha256": "c5e8d965b64904d7bdf870996459f4deeb336416153dda0d2ffecd41c48d6ab8",
+  "launcher": 1,
+  "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
+}
