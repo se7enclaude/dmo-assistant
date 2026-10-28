@@ -1,7 +1,14 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.6",
+      "date": "2026-10-28",
+      "notes": [
+        "Toute l'application s'affiche maintenant en 1120 px de large, sur tous les onglets (plus de fenêtre étroite)."
+      ]
+    },
     {
       "version": "1.0.5",
       "date": "2026-10-28",
@@ -59,7 +66,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "b651dd97634e932a21c6c6ecaaf4e64c469e0c7cbea7ab70aa622e14646217c3",
+  "sha256": "72eeb4ce699b5a4d348468a172b3f8cbff0aa7acde9b5cd58f0f5f8dd25406eb",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
