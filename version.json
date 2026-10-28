@@ -1,7 +1,15 @@
 {
-  "version": "1.0.0",
-  "date": "2026-10-27",
+  "version": "1.0.1",
+  "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.1",
+      "date": "2026-10-28",
+      "notes": [
+        "Nouvelle section « Me contacter » (onglet Contact) : Discord se7en.world et pseudo en jeu Yami Seko, avec boutons Copier.",
+        "Bouton « Me contacter » dans l'onglet Aide."
+      ]
+    },
     {
       "version": "1.0.0",
       "date": "2026-10-27",
@@ -17,7 +25,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "d78eecce0dcee6c958068afa319f001f32296a582f0bb439112abb7eedc4bbd4",
+  "sha256": "f2f7f56f7b05ced9c05d3cb36eed7405f46b40fd51b5a5e82fcac737171dbc60",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
