@@ -1,7 +1,16 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.7",
+      "date": "2026-10-28",
+      "notes": [
+        "La traduction s'affiche bien plus vite en jeu : le texte apparaît tout de suite (l'image suit), suivi de la souris 2× plus réactif.",
+        "Nouvel overlay en jeu façon Master Duel : barre de nom, attribut, niveau, ATK/DEF, type et effet en français.",
+        "Collection : meilleure lecture des cartes (début de la DEF et couleur Normal/Effet lus sur chaque case), moins d'erreurs entre cartes de même ATK."
+      ]
+    },
     {
       "version": "1.0.6",
       "date": "2026-10-28",
@@ -66,7 +75,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "a3d38abf814d52234d0ce7fdff4d61d2a0bef05f8afcc7872e0f478ade896f8d",
+  "sha256": "dc74060ddf8e6a425a06518a58e1adb4e1476f1cf5678ccf1b4f0f64bf5f4271",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
