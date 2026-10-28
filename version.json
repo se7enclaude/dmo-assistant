@@ -1,7 +1,16 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.4",
+      "date": "2026-10-28",
+      "notes": [
+        "Nouvelle animation d'ouverture façon écran-titre de Master Duel, avec les vraies cartes (Magicien Sombre, Dragon Blanc aux Yeux Bleus, Dragon Noir aux Yeux Rouges).",
+        "Toute l'application au style Master Duel : fond bleu nuit à bandes diagonales, fenêtres à barre de titre, boutons noirs bordés de blanc avec accents jaune-vert.",
+        "Nouvelle fiche de carte comme l'écran de détail de Master Duel : barre de nom et attribut, étoiles et ATK/DEF, barre de type, carte à droite avec les boutons."
+      ]
+    },
     {
       "version": "1.0.3",
       "date": "2026-10-28",
@@ -43,7 +52,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "6c7ab9b5ea2a244b0d039eced50f3f7ab0b5610661ff20f82ec05782e74da28b",
+  "sha256": "8018f74814e98cab71cd99577e57b1b51b3211cfb9c63af1ed960f6aedbaee31",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
