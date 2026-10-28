@@ -283,6 +283,90 @@
     section { padding-top: 80px; } .tile { min-height: 0; padding: 26px; }
     .ccard { flex-wrap: wrap; }
   }
+
+  /* ================= Direction artistique « Master Duel » (comme l'application) ================= */
+  @font-face { font-family: "Barlow MD"; src: url("fonts/BarlowSemiCondensed-SemiBold.ttf") format("truetype"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Barlow MD"; src: url("fonts/BarlowSemiCondensed-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+  :root { --lime: #d4f000; --navy: #0a0e20; --md-line: #3f4c7a; --md-font: "Bahnschrift", "Barlow MD", "Segoe UI", sans-serif;
+    --gold: #d4f000; --gold-hi: #e9ff6a; --text-2: rgba(225, 232, 255, .82); --text-3: rgba(200, 210, 240, .6); }
+  body { background: var(--navy); font-family: var(--md-font); letter-spacing: .005em; }
+  a { color: var(--lime); }
+
+  /* fond : bleu nuit, grandes bandes diagonales, lignes de balayage, particules */
+  .realm { background: radial-gradient(80% 60% at 50% 30%, #1b2350 0%, #0c1029 55%, #05060c 100%); }
+  .realm .rays { inset: 0; left: 0; top: 0; width: 100%; height: 100%; translate: none; animation: none; -webkit-mask: none; mask: none;
+    background: linear-gradient(118deg, transparent 0 30%, rgba(60, 90, 170, .2) 30% 47%, rgba(22, 28, 68, .75) 47% 62%, rgba(110, 70, 190, .14) 62% 72%, transparent 72%); }
+  .realm .stars { background-image:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, .02) 0 1px, transparent 1px 4px),
+      radial-gradient(1.5px 1.5px at 12% 22%, #8f9bff, transparent), radial-gradient(1px 1px at 72% 12%, #8f9bff, transparent), radial-gradient(1.5px 1.5px at 88% 46%, #6d7dff, transparent),
+      radial-gradient(1px 1px at 32% 68%, #8f9bff, transparent), radial-gradient(1.5px 1.5px at 56% 84%, #6d7dff, transparent), radial-gradient(1px 1px at 6% 90%, #8f9bff, transparent),
+      radial-gradient(1px 1px at 44% 38%, #8f9bff, transparent), radial-gradient(1.5px 1.5px at 94% 88%, #6d7dff, transparent); }
+
+  /* panneaux : rectangles bleu nuit à bord clair (fini le verre arrondi) */
+  .glass, .glass.strong { border-radius: 4px; background: linear-gradient(180deg, rgba(30, 40, 82, .86), rgba(14, 19, 42, .92));
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .7), 0 18px 44px rgba(0, 0, 0, .45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .glass::after { padding: 1px; background: linear-gradient(180deg, rgba(160, 175, 215, .75), rgba(90, 105, 150, .45)); }
+
+  /* barre du haut */
+  .bar { border-radius: 6px; }
+  .brand { font-family: var(--md-font); font-weight: 700; color: #fff; }
+  .brand span { color: var(--lime); }
+  .nav a { border-radius: 4px; font-family: var(--md-font); font-weight: 600; }
+  .nav a:hover { background: rgba(212, 240, 0, .12); color: var(--lime); }
+  .lang { border-radius: 6px; }
+  .lang button { border-radius: 4px; font-family: var(--md-font); }
+  .lang button[aria-pressed="true"] { color: #10140a; background: var(--lime); box-shadow: 0 0 12px rgba(212, 240, 0, .4); }
+  .nav-cta { position: relative; color: var(--lime); background: #000; border: 2px solid #fff; border-radius: 9px; box-shadow: none; font-family: var(--md-font); }
+  .nav-cta:hover { box-shadow: 0 0 0 1px var(--lime), 0 0 14px rgba(212, 240, 0, .4); }
+
+  /* boutons : noirs bordés de blanc, coin jaune-vert (comme « Select ») */
+  .btn { border-radius: 10px; font-family: var(--md-font); font-weight: 700; letter-spacing: .02em; }
+  .btn-gold { color: var(--lime); background: linear-gradient(180deg, #0b0f1f, #000); border: 2px solid #fff;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .5); overflow: hidden; }
+  .btn-gold::before { content: ""; position: absolute; left: -2px; top: -2px; width: 20px; height: 20px;
+    background: linear-gradient(135deg, var(--lime) 50%, transparent 50%); }
+  .btn-gold:hover { filter: none; box-shadow: 0 0 0 1px var(--lime), 0 0 18px rgba(212, 240, 0, .45); }
+  .btn.glass { border: 2px solid rgba(255, 255, 255, .8); background: rgba(5, 7, 15, .7); }
+  .btn.glass::after { display: none; }
+  .btn.glass:hover { border-color: var(--lime); color: var(--lime); }
+
+  /* en-tête : logo Yu-Gi-Oh! puis SE7EN façon écran-titre */
+  .logo { font: 700 clamp(56px, 8vw, 104px)/1 var(--md-font); letter-spacing: .06em;
+    background: linear-gradient(180deg, #ffffff 0%, #e8eeff 45%, #9fb2e6 60%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 14px rgba(120, 160, 255, .75)) drop-shadow(0 3px 0 #1b2350); }
+  .logo span { background: linear-gradient(180deg, #ffe7a3, #f5c451 55%, #c88a22); -webkit-background-clip: text; background-clip: text; }
+  .sub { font-family: var(--md-font); font-weight: 600; letter-spacing: .55em; color: #cfd9ff; text-shadow: none; }
+  .headline { font-family: var(--md-font); font-weight: 700; letter-spacing: -.005em; }
+  .gold { background: none; -webkit-background-clip: border-box; background-clip: border-box; color: var(--lime); }
+  .eyebrow { border-radius: 4px; color: var(--lime); }
+  .fan .halo { background: radial-gradient(circle, rgba(120, 150, 255, .35), rgba(60, 80, 200, .15) 45%, transparent 70%); }
+  .fan .ring { border-color: rgba(190, 215, 255, .45); box-shadow: 0 0 40px rgba(120, 160, 255, .2) inset; }
+
+  /* titres de section : bandeau noir à coin coupé, accroche jaune-vert */
+  .kicker { color: var(--lime); font-family: var(--md-font); letter-spacing: .2em; }
+  .sec-head h2, .dmo .txt h2, .update h2, .community h2 { font-family: var(--md-font); font-weight: 700; letter-spacing: .01em; }
+  .sec-head h2 { display: inline-block; padding: 8px 46px 8px 18px; background: #000;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%); }
+  .sec-head h2::after { display: none; }
+  .download h2 { font-family: var(--md-font); color: #fff; text-shadow: 0 0 18px rgba(120, 160, 255, .7); }
+
+  /* blocs */
+  .why .big, .tile .stat, .step .n, ol.steps li::before { font-family: var(--md-font); }
+  .why .big, .tile .stat { color: var(--lime); }
+  .step .n { color: #10140a; background: var(--lime); border-radius: 4px; box-shadow: 0 0 14px rgba(212, 240, 0, .35); }
+  .tile .ico, .ccard .ico { border-radius: 6px; }
+  .i-g { background: linear-gradient(180deg, #e9ff6a, var(--lime)); color: #10140a !important; box-shadow: 0 8px 20px rgba(212, 240, 0, .3); }
+  .dmo li::before { background: var(--lime); box-shadow: 0 0 10px rgba(212, 240, 0, .6); }
+  .dev, .bubble .tag, .pill { border-radius: 4px; }
+  .bubble .tag { color: #10140a; background: var(--lime); }
+  .bubble h3 { font-family: var(--md-font); }
+  kbd { border-radius: 4px; background: #05070f; box-shadow: inset 0 0 0 1px #8792b4; color: #fff; }
+  .faq summary::after { color: var(--lime); }
+  .copy { color: #10140a; background: var(--lime); border-radius: 6px; font-family: var(--md-font); }
+  .toast .dot { border-radius: 4px; }
+  .card { border-radius: 3% / 2%; box-shadow: 0 0 0 2px rgba(255, 255, 255, .85), 0 26px 50px rgba(0, 0, 0, .6); }
+  .dmo .shot img { border-radius: 4px; box-shadow: 0 0 0 2px rgba(255, 255, 255, .8), 0 24px 60px rgba(0, 0, 0, .55); }
+  footer { background: rgba(3, 4, 10, .7); border-top-color: rgba(255, 255, 255, .14); }
 </style>
 </head>
 <body>
@@ -529,7 +613,7 @@
     <ul>
       <li data-i18n="l1"><b>Projet non lucratif</b> : Se7en DMO Assistant est distribué gratuitement, sans publicité ni contrepartie, uniquement pour la communauté française. Il ne doit pas être revendu.</li>
       <li data-i18n="l2">Projet de fan, <b>non affilié</b> à Konami ni à l'équipe de Yu-Gi-Oh! Duel Monsters Online. Yu-Gi-Oh!, son logo, les noms et les illustrations des cartes (dont Magicien Sombre, Dragon Blanc aux Yeux Bleus et Dragon Noir aux Yeux Rouges) appartiennent à Konami et à leurs ayants droit ; ils sont montrés ici uniquement à titre d'illustration, sans aucun but commercial.</li>
-      <li data-i18n="l3">Données de cartes : <a href="https://ygoprodeck.com/api-guide/" rel="noopener">YGOPRODeck</a>. Polices Cinzel et Poppins sous licence SIL Open Font License.</li>
+      <li data-i18n="l3">Données de cartes : <a href="https://ygoprodeck.com/api-guide/" rel="noopener">YGOPRODeck</a>. Polices Cinzel, Poppins et Barlow sous licence SIL Open Font License.</li>
       <li data-i18n="l4">L'application ne modifie pas le jeu et n'envoie aucune donnée personnelle.</li>
     </ul>
     <div class="bottom"><span><span class="brand" style="font-size:14px">SE<span>7</span>EN</span> · <span data-i18n="footer">fait par un joueur, pour les joueurs</span></span><span>Discord : se7en.world · DMO : Yami Seko</span></div>
@@ -592,7 +676,7 @@
     ct_k: "Contact", ct_t: "An idea? A bug? A duel?", copy: "Copy", ingame: "In-game name in DMO",
     l1: "<b>Non-profit project</b>: Se7en DMO Assistant is distributed for free, with no ads and nothing in return, only for the French-speaking community. It must not be resold.",
     l2: "Fan project, <b>not affiliated</b> with Konami or the Yu-Gi-Oh! Duel Monsters Online team. Yu-Gi-Oh!, its logo, and card names and artworks (including Dark Magician, Blue-Eyes White Dragon and Red-Eyes Black Dragon) belong to Konami and their respective owners; they are shown here for illustration only, with no commercial purpose.",
-    l3: "Card data: <a href=\"https://ygoprodeck.com/api-guide/\" rel=\"noopener\">YGOPRODeck</a>. Cinzel and Poppins fonts under the SIL Open Font License.",
+    l3: "Card data: <a href=\"https://ygoprodeck.com/api-guide/\" rel=\"noopener\">YGOPRODeck</a>. Cinzel, Poppins and Barlow fonts under the SIL Open Font License.",
     l4: "The app does not modify the game and sends no personal data.",
     footer: "made by a player, for players",
   };
