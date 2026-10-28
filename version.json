@@ -1,7 +1,16 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.3",
+      "date": "2026-10-28",
+      "notes": [
+        "Nouvel écran d'accueil façon menu de jeu : Traduire, Deck, Deck parfait, Collection, Générer, Contact, Aide (clavier ↑ ↓ Entrée ou souris), carte vedette et encart des nouveautés.",
+        "Reconnaissance des cartes 24 fois plus rapide (environ 60 ms au lieu de 1,5 s) : F8 et le mode auto répondent presque instantanément.",
+        "Nouveau look Se7en (violet et or, titres Cinzel), animations plus fluides, changement de taille de fenêtre animé, chargement des images plus doux."
+      ]
+    },
     {
       "version": "1.0.2",
       "date": "2026-10-28",
@@ -34,7 +43,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "eeaffbe21b5979678b8493fd99b361c093ea4b4aee6e5d46287c4b427bd97873",
+  "sha256": "6c7ab9b5ea2a244b0d039eced50f3f7ab0b5610661ff20f82ec05782e74da28b",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
