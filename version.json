@@ -1,7 +1,16 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.2",
+      "date": "2026-10-28",
+      "notes": [
+        "Base de cartes agrandie : 18 277 cartes (+3 600 cartes de l'anime, du manga, des jeux vidéo et des jetons), toutes traduites en français.",
+        "Reconnaissance par l'illustration plus précise : 91 % des cartes acceptées sur des images floues ou mal cadrées (79 % avant), 84 % reconnues avec certitude (60 % avant).",
+        "Les cartes anime / non officielles sont signalées sur leur fiche."
+      ]
+    },
     {
       "version": "1.0.1",
       "date": "2026-10-28",
@@ -25,7 +34,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "f2f7f56f7b05ced9c05d3cb36eed7405f46b40fd51b5a5e82fcac737171dbc60",
+  "sha256": "eeaffbe21b5979678b8493fd99b361c093ea4b4aee6e5d46287c4b427bd97873",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
