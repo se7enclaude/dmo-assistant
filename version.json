@@ -1,7 +1,14 @@
 {
-  "version": "1.0.4",
+  "version": "1.0.5",
   "date": "2026-10-28",
   "history": [
+    {
+      "version": "1.0.5",
+      "date": "2026-10-28",
+      "notes": [
+        "L'animation d'ouverture s'affiche directement dans la grande fenêtre, à la même taille que l'écran d'accueil (plus de changement de taille au démarrage)."
+      ]
+    },
     {
       "version": "1.0.4",
       "date": "2026-10-28",
@@ -52,7 +59,7 @@
     }
   ],
   "zip": "https://raw.githubusercontent.com/se7enclaude/dmo-assistant/main/app.zip",
-  "sha256": "8018f74814e98cab71cd99577e57b1b51b3211cfb9c63af1ed960f6aedbaee31",
+  "sha256": "b651dd97634e932a21c6c6ecaaf4e64c469e0c7cbea7ab70aa622e14646217c3",
   "launcher": 1,
   "download": "https://github.com/se7enclaude/dmo-assistant/releases/latest"
 }
